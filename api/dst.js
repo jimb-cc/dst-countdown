@@ -1,27 +1,11 @@
-const express = require('express');
 const https = require('https');
-const path = require('path');
-const compression = require('compression');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Cache for GOV.UK data
 let cachedHtml = null;
 let cacheTimestamp = null;
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 
-// Enable gzip compression for all responses
-app.use(compression());
-
-// Serve static files with cache headers
-app.use(express.static('public', {
-    maxAge: '1d', // Cache static files for 1 day
-    etag: true
-}));
-
-// API endpoint to get DST information
-app.get('/api/dst', async (req, res) => {
+module.exports = async (req, res) => {
     try {
         // Check if cache is valid
         const now = Date.now();
@@ -33,13 +17,14 @@ app.get('/api/dst', async (req, res) => {
         const nextEvent = parseAndCalculateNextEvent(cachedHtml);
 
         // Add cache headers for API response
-        res.setHeader('Cache-Control', 'public, max-age=60'); // Cache for 60 seconds
-        res.json(nextEvent);
+        res.setHeader('Cache-Control', 'public, max-age=60');
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(nextEvent);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: 'Failed to fetch DST information' });
     }
-});
+};
 
 // Fetch GOV.UK page
 function fetchGovUkPage() {
@@ -208,15 +193,3 @@ function parseAndCalculateNextEvent(html) {
         progressPercent: Math.min(100, Math.max(0, progressPercent))
     };
 }
-
-// Start server
-app.listen(PORT, () => {
-    console.log('====================================');
-    console.log('UK DST Countdown Server');
-    console.log('====================================');
-    console.log(`Server running at: http://localhost:${PORT}`);
-    console.log(`Open your browser to: http://localhost:${PORT}`);
-    console.log('');
-    console.log('Press Ctrl+C to stop');
-    console.log('====================================');
-});
