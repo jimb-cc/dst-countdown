@@ -4,6 +4,7 @@ samconfig.toml
 
 # Node
 node_modules/
+package.json
 package-lock.json
 
 # Backup files
