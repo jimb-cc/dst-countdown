@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Daylight Saving Time Countdown</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>UK Daylight<br>Saving Time</h1>
+        </header>
+
+        <main>
+            <div class="countdown-section">
+                <p class="description" id="description">Loading...</p>
+                <div class="countdown" id="countdown">—</div>
+                <p class="unit">seconds</p>
+            </div>
+
+            <div class="info-section">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="label">Target Date</span>
+                        <span class="value" id="targetDate">—</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Event Type</span>
+                        <span class="value" id="eventType">—</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Data source: <a href="https://www.gov.uk/when-do-the-clocks-change" target="_blank" rel="noopener">GOV.UK</a></p>
+        </footer>
+    </div>
+
+    <div id="error" class="error hidden">
+        <p>Failed to load DST information. Please refresh the page.</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

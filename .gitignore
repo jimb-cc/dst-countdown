@@ -1,0 +1,24 @@
+# SAM Build
+.aws-sam/
+samconfig.toml
+
+# Node
+node_modules/
+package-lock.json
+
+# Backup files
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
