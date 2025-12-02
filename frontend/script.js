@@ -6,11 +6,13 @@ const countdownElement = document.getElementById('countdown');
 const descriptionElement = document.getElementById('description');
 const targetDateElement = document.getElementById('targetDate');
 const eventTypeElement = document.getElementById('eventType');
+const progressBarElement = document.getElementById('progressBar');
 const errorElement = document.getElementById('error');
 const containerElement = document.querySelector('.container');
 
 // State
 let targetTimestamp = null;
+let previousTimestamp = null;
 let eventData = null;
 let countdownInterval = null;
 
@@ -34,21 +36,29 @@ async function fetchDSTData() {
 
     eventData = await response.json();
     targetTimestamp = eventData.timestamp;
+    previousTimestamp = eventData.previousEvent ? eventData.previousEvent.timestamp : null;
 
     // Update static information
     descriptionElement.textContent = eventData.description;
     targetDateElement.textContent = formatDate(new Date(eventData.targetDate));
     eventTypeElement.textContent = eventData.type === 'forward' ? 'Clocks Forward' : 'Clocks Back';
+
+    // Set initial progress
+    if (eventData.progressPercent !== undefined) {
+        progressBarElement.style.width = `${eventData.progressPercent}%`;
+    }
 }
 
 // Start countdown timer
 function startCountdown() {
     updateCountdown();
 
-    // Update every millisecond
-    countdownInterval = setInterval(() => {
+    // Use requestAnimationFrame for efficient updates (~60fps)
+    function animate() {
         updateCountdown();
-    }, 1);
+        countdownInterval = requestAnimationFrame(animate);
+    }
+    countdownInterval = requestAnimationFrame(animate);
 }
 
 // Update countdown display
@@ -58,8 +68,9 @@ function updateCountdown() {
 
     if (remaining <= 0) {
         // Event has occurred, reload data
-        clearInterval(countdownInterval);
+        cancelAnimationFrame(countdownInterval);
         countdownElement.textContent = '0.00';
+        progressBarElement.style.width = '100%';
         setTimeout(() => {
             init(); // Reload to get next event
         }, 5000);
@@ -68,6 +79,14 @@ function updateCountdown() {
 
     // Format number with thousands separators and 2 decimal places
     countdownElement.textContent = formatNumber(remaining);
+
+    // Update progress bar
+    if (previousTimestamp) {
+        const totalDuration = targetTimestamp - previousTimestamp;
+        const elapsed = now - previousTimestamp;
+        const progressPercent = (elapsed / totalDuration) * 100;
+        progressBarElement.style.width = `${Math.min(100, Math.max(0, progressPercent))}%`;
+    }
 }
 
 // Format number as seconds with 2 decimal places and commas
