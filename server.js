@@ -15,7 +15,7 @@ const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
 app.use(compression());
 
 // Serve static files with cache headers
-app.use(express.static('public', {
+app.use(express.static('.', {
     maxAge: '1d', // Cache static files for 1 day
     etag: true
 }));
