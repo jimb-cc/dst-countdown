@@ -3,6 +3,7 @@ const API_ENDPOINT = '/api/dst';
 
 // DOM Elements
 const countdownElement = document.getElementById('countdown');
+const countdownFullElement = document.getElementById('countdownFull');
 const descriptionElement = document.getElementById('description');
 const targetDateElement = document.getElementById('targetDate');
 const eventTypeElement = document.getElementById('eventType');
@@ -11,6 +12,15 @@ const errorElement = document.getElementById('error');
 const containerElement = document.querySelector('.container');
 const prevLabelElement = document.getElementById('prevLabel');
 const nextLabelElement = document.getElementById('nextLabel');
+const unitLabelElement = document.getElementById('unitLabel');
+
+// Full format elements
+const monthsElement = document.getElementById('months');
+const weeksElement = document.getElementById('weeks');
+const daysElement = document.getElementById('days');
+const hoursElement = document.getElementById('hours');
+const minutesElement = document.getElementById('minutes');
+const secondsElement = document.getElementById('seconds');
 
 // Settings Elements
 const settingsToggle = document.getElementById('settingsToggle');
@@ -54,6 +64,22 @@ function applySettings() {
     formatButtons.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.format === timeFormat);
     });
+
+    // Apply time format display
+    updateTimeFormatDisplay();
+}
+
+// Update which countdown display is visible
+function updateTimeFormatDisplay() {
+    if (timeFormat === 'seconds') {
+        countdownElement.classList.remove('hidden');
+        countdownFullElement.classList.remove('active');
+        unitLabelElement.textContent = 'seconds';
+    } else {
+        countdownElement.classList.add('hidden');
+        countdownFullElement.classList.add('active');
+        unitLabelElement.textContent = '';
+    }
 }
 
 // Initialize settings panel
@@ -101,6 +127,7 @@ function initSettings() {
             formatButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             localStorage.setItem('timeFormat', timeFormat);
+            updateTimeFormatDisplay();
             updateCountdown(); // Immediate update
         });
     });
@@ -172,7 +199,7 @@ function updateCountdown() {
     if (timeFormat === 'seconds') {
         countdownElement.textContent = formatAsSeconds(remaining);
     } else {
-        countdownElement.textContent = formatAsFull(remaining);
+        updateFullDisplay(remaining);
     }
 
     // Update progress bar
@@ -195,8 +222,8 @@ function formatAsSeconds(milliseconds) {
     return `${formattedInteger}.${decimalPart}`;
 }
 
-// Format as months, weeks, days, hours, minutes, seconds
-function formatAsFull(milliseconds) {
+// Update full display with individual elements
+function updateFullDisplay(milliseconds) {
     const totalSeconds = milliseconds / 1000;
 
     // Calculate each unit
@@ -207,17 +234,13 @@ function formatAsFull(milliseconds) {
     const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
     const seconds = totalSeconds % 60;
 
-    // Build the string, only including non-zero units (except always show seconds)
-    const parts = [];
-
-    if (months > 0) parts.push(`${months}mo`);
-    if (weeks > 0) parts.push(`${weeks}w`);
-    if (days > 0) parts.push(`${days}d`);
-    if (hours > 0) parts.push(`${hours}h`);
-    if (minutes > 0) parts.push(`${minutes}m`);
-    parts.push(`${seconds.toFixed(2)}s`);
-
-    return parts.join(' ');
+    // Update each element
+    monthsElement.textContent = months;
+    weeksElement.textContent = weeks;
+    daysElement.textContent = days;
+    hoursElement.textContent = hours;
+    minutesElement.textContent = minutes;
+    secondsElement.textContent = seconds.toFixed(2);
 }
 
 // Format date for display
