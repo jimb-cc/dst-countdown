@@ -36,7 +36,7 @@ let previousTimestamp = null;
 let eventData = null;
 let countdownInterval = null;
 let timeFormat = localStorage.getItem('timeFormat') || 'seconds';
-let darkMode = localStorage.getItem('darkMode') === 'true';
+let darkMode = localStorage.getItem('darkMode') !== 'false'; // Default to true
 
 // Initialize
 async function init() {
