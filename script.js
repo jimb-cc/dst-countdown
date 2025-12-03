@@ -263,8 +263,31 @@ function initSettings() {
     });
 }
 
-// Fetch DST data from server
+// Fetch DST data from server (with localStorage caching)
 async function fetchDSTData() {
+    const CACHE_DURATION = 3600000; // 1 hour in milliseconds
+
+    // Check localStorage cache first
+    const cached = localStorage.getItem('dstData');
+    const cacheTime = localStorage.getItem('dstDataTime');
+
+    if (cached && cacheTime) {
+        const age = Date.now() - parseInt(cacheTime, 10);
+        if (age < CACHE_DURATION) {
+            // Use cached data
+            eventData = JSON.parse(cached);
+            targetTimestamp = eventData.timestamp;
+            previousTimestamp = eventData.previousEvent ? eventData.previousEvent.timestamp : null;
+            targetDateElement.textContent = formatDate(new Date(eventData.targetDate));
+            updateEventText();
+            if (eventData.progressPercent !== undefined) {
+                progressBarElement.style.width = `${eventData.progressPercent}%`;
+            }
+            return;
+        }
+    }
+
+    // Fetch fresh data from API
     const response = await fetch(API_ENDPOINT);
 
     if (!response.ok) {
@@ -272,6 +295,11 @@ async function fetchDSTData() {
     }
 
     eventData = await response.json();
+
+    // Cache the response
+    localStorage.setItem('dstData', JSON.stringify(eventData));
+    localStorage.setItem('dstDataTime', Date.now().toString());
+
     targetTimestamp = eventData.timestamp;
     previousTimestamp = eventData.previousEvent ? eventData.previousEvent.timestamp : null;
 
@@ -291,12 +319,9 @@ async function fetchDSTData() {
 function startCountdown() {
     updateCountdown();
 
-    // Use requestAnimationFrame for efficient updates (~60fps)
-    function animate() {
-        updateCountdown();
-        countdownInterval = requestAnimationFrame(animate);
-    }
-    countdownInterval = requestAnimationFrame(animate);
+    // Update 10 times per second - smooth enough for countdown display
+    // Much more efficient than requestAnimationFrame at 60fps
+    countdownInterval = setInterval(updateCountdown, 100);
 }
 
 // Update countdown display
@@ -306,9 +331,12 @@ function updateCountdown() {
 
     if (remaining <= 0) {
         // Event has occurred, reload data
-        cancelAnimationFrame(countdownInterval);
+        clearInterval(countdownInterval);
         countdownElement.textContent = '0.00';
         progressBarElement.style.width = '100%';
+        // Clear cached data so we fetch fresh
+        localStorage.removeItem('dstData');
+        localStorage.removeItem('dstDataTime');
         setTimeout(() => {
             init(); // Reload to get next event
         }, 5000);

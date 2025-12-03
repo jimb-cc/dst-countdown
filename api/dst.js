@@ -1,180 +1,118 @@
-const https = require('https');
-
-// Cache for GOV.UK data
-let cachedHtml = null;
-let cacheTimestamp = null;
-const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+/**
+ * UK DST API Endpoint
+ *
+ * Optimized version:
+ * - No external dependencies (GOV.UK fetch removed)
+ * - Pure calculation based on UK DST rules
+ * - Long cache duration (data changes twice per year)
+ * - Security headers included
+ */
 
 module.exports = async (req, res) => {
     try {
-        // Check if cache is valid
-        const now = Date.now();
-        if (!cachedHtml || !cacheTimestamp || (now - cacheTimestamp) > CACHE_DURATION) {
-            cachedHtml = await fetchGovUkPage();
-            cacheTimestamp = now;
-        }
+        const nextEvent = calculateNextDSTEvent();
 
-        const nextEvent = parseAndCalculateNextEvent(cachedHtml);
+        // Security headers
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+        res.setHeader('X-Frame-Options', 'DENY');
+        res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
 
-        // Add cache headers for API response
-        res.setHeader('Cache-Control', 'public, max-age=60');
+        // Cache for 1 day - DST dates only change twice per year
+        res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=172800');
         res.setHeader('Content-Type', 'application/json');
+
         res.status(200).json(nextEvent);
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Failed to fetch DST information' });
+        console.error('DST API Error:', error.message);
+        res.status(500).json({ error: 'Failed to calculate DST information' });
     }
 };
 
-// Fetch GOV.UK page
-function fetchGovUkPage() {
-    return new Promise((resolve, reject) => {
-        https.get('https://www.gov.uk/when-do-the-clocks-change', (res) => {
-            let data = '';
-
-            res.on('data', (chunk) => {
-                data += chunk;
-            });
-
-            res.on('end', () => {
-                resolve(data);
-            });
-        }).on('error', (err) => {
-            reject(err);
-        });
-    });
+/**
+ * Calculate the last Sunday of a given month
+ * @param {number} year - The year
+ * @param {number} month - The month (0-indexed, so March=2, October=9)
+ * @param {number} hour - The hour (UTC) when the change occurs
+ * @returns {Date} - The date of the last Sunday
+ */
+function getLastSundayOfMonth(year, month, hour) {
+    // Start from the last day of the month
+    const date = new Date(Date.UTC(year, month + 1, 0, hour, 0, 0, 0));
+    // Walk back to find Sunday (day 0)
+    while (date.getUTCDay() !== 0) {
+        date.setUTCDate(date.getUTCDate() - 1);
+    }
+    return date;
 }
 
-// Parse HTML and calculate next DST event
-function parseAndCalculateNextEvent(html) {
+/**
+ * Calculate the next UK DST event based on current date
+ * UK DST Rules:
+ * - Spring forward: Last Sunday of March at 01:00 UTC (GMT -> BST)
+ * - Fall back: Last Sunday of October at 01:00 UTC (BST -> GMT)
+ *   (Note: Clocks show 02:00 BST when they go back to 01:00 GMT)
+ */
+function calculateNextDSTEvent() {
     const now = new Date();
     const currentYear = now.getFullYear();
 
-    // Extract dates from the HTML table
-    // The page shows dates in format like "30 March" or "26 October"
-    // We'll look for patterns with or without the year
+    // Calculate DST dates for current year and next year
+    const events = [];
 
-    // Look for all March dates in the current and next year
-    const marchPattern = /(\\d{1,2})\\s+March(?:\\s+(\\d{4}))?/gi;
-    const octoberPattern = /(\\d{1,2})\\s+October(?:\\s+(\\d{4}))?/gi;
-
-    const marchMatches = [...html.matchAll(marchPattern)];
-    const octoberMatches = [...html.matchAll(octoberPattern)];
-
-    const futureEvents = [];
-    const pastEvents = [];
-
-    // Process March dates (clocks go forward)
-    for (const match of marchMatches) {
-        const day = parseInt(match[1]);
-        const year = match[2] ? parseInt(match[2]) : currentYear;
-        const forwardDate = new Date(year, 2, day, 1, 0, 0, 0); // Month 2 = March (0-indexed)
-
-        const event = {
+    for (let year = currentYear; year <= currentYear + 1; year++) {
+        // Spring: Last Sunday of March at 01:00 UTC
+        const springDate = getLastSundayOfMonth(year, 2, 1);
+        events.push({
             type: 'forward',
             description: 'Until clocks go forward (BST begins)',
-            timestamp: forwardDate.getTime(),
-            date: forwardDate.toISOString(),
-            day: day,
-            year: year
-        };
+            timestamp: springDate.getTime(),
+            date: springDate.toISOString()
+        });
 
-        if (forwardDate > now) {
-            futureEvents.push(event);
-        } else {
-            pastEvents.push(event);
-        }
-    }
-
-    // Process October dates (clocks go back)
-    for (const match of octoberMatches) {
-        const day = parseInt(match[1]);
-        const year = match[2] ? parseInt(match[2]) : currentYear;
-        const backwardDate = new Date(year, 9, day, 2, 0, 0, 0); // Month 9 = October (0-indexed)
-
-        const event = {
+        // Autumn: Last Sunday of October at 01:00 UTC
+        const autumnDate = getLastSundayOfMonth(year, 9, 1);
+        events.push({
             type: 'backward',
             description: 'Until clocks go back (GMT begins)',
-            timestamp: backwardDate.getTime(),
-            date: backwardDate.toISOString(),
-            day: day,
-            year: year
-        };
-
-        if (backwardDate > now) {
-            futureEvents.push(event);
-        } else {
-            pastEvents.push(event);
-        }
-    }
-
-    // If no future events found, calculate next year's March event
-    if (futureEvents.length === 0) {
-        const nextYear = currentYear + 1;
-        const nextMarchDate = new Date(nextYear, 2, 31, 1, 0, 0, 0);
-        while (nextMarchDate.getDay() !== 0) {
-            nextMarchDate.setDate(nextMarchDate.getDate() - 1);
-        }
-
-        futureEvents.push({
-            type: 'forward',
-            description: 'Until clocks go forward (BST begins)',
-            timestamp: nextMarchDate.getTime(),
-            date: nextMarchDate.toISOString()
+            timestamp: autumnDate.getTime(),
+            date: autumnDate.toISOString()
         });
     }
 
-    // Sort events
-    futureEvents.sort((a, b) => a.timestamp - b.timestamp);
-    pastEvents.sort((a, b) => b.timestamp - a.timestamp); // Most recent first
+    // Sort all events by timestamp
+    events.sort((a, b) => a.timestamp - b.timestamp);
 
-    if (futureEvents.length === 0) {
-        throw new Error('Could not parse DST dates from gov.uk page');
-    }
+    // Find next future event and previous past event
+    const nowTimestamp = now.getTime();
+    let nextEvent = null;
+    let previousEvent = null;
 
-    const nextEvent = futureEvents[0];
-    let previousEvent = pastEvents.length > 0 ? pastEvents[0] : null;
-
-    // If no previous event found from parsing, calculate it based on DST rules
-    if (!previousEvent) {
-        const nextEventDate = new Date(nextEvent.timestamp);
-        const nextEventYear = nextEventDate.getFullYear();
-
-        let prevDate;
-        if (nextEvent.type === 'forward') {
-            // Next is March forward, so previous was October backward of previous year
-            prevDate = new Date(nextEventYear - 1, 9, 31, 2, 0, 0, 0); // Last day of October
-            // Walk back to find last Sunday
-            while (prevDate.getDay() !== 0) {
-                prevDate.setDate(prevDate.getDate() - 1);
+    for (let i = 0; i < events.length; i++) {
+        if (events[i].timestamp > nowTimestamp) {
+            nextEvent = events[i];
+            if (i > 0) {
+                previousEvent = events[i - 1];
             }
-            previousEvent = {
-                type: 'backward',
-                timestamp: prevDate.getTime(),
-                date: prevDate.toISOString()
-            };
-        } else {
-            // Next is October backward, so previous was March forward of same year
-            prevDate = new Date(nextEventYear, 2, 31, 1, 0, 0, 0); // Last day of March
-            // Walk back to find last Sunday
-            while (prevDate.getDay() !== 0) {
-                prevDate.setDate(prevDate.getDate() - 1);
-            }
-            previousEvent = {
-                type: 'forward',
-                timestamp: prevDate.getTime(),
-                date: prevDate.toISOString()
-            };
+            break;
         }
     }
 
-    const millisecondsRemaining = nextEvent.timestamp - now.getTime();
+    // Fallback: if somehow no future event found, calculate next year
+    if (!nextEvent) {
+        const nextSpring = getLastSundayOfMonth(currentYear + 2, 2, 1);
+        nextEvent = {
+            type: 'forward',
+            description: 'Until clocks go forward (BST begins)',
+            timestamp: nextSpring.getTime(),
+            date: nextSpring.toISOString()
+        };
+    }
 
     // Calculate progress percentage
     let progressPercent = 0;
     if (previousEvent) {
         const totalDuration = nextEvent.timestamp - previousEvent.timestamp;
-        const elapsed = now.getTime() - previousEvent.timestamp;
+        const elapsed = nowTimestamp - previousEvent.timestamp;
         progressPercent = (elapsed / totalDuration) * 100;
     }
 
@@ -183,8 +121,8 @@ function parseAndCalculateNextEvent(html) {
         description: nextEvent.description,
         targetDate: nextEvent.date,
         timestamp: nextEvent.timestamp,
-        millisecondsRemaining: millisecondsRemaining,
-        currentTime: now.getTime(),
+        millisecondsRemaining: nextEvent.timestamp - nowTimestamp,
+        currentTime: nowTimestamp,
         previousEvent: previousEvent ? {
             type: previousEvent.type,
             timestamp: previousEvent.timestamp,
