@@ -66,9 +66,9 @@
         <!-- Swiss grid: asymmetric layout with strong left alignment -->
         <header>
             <div class="header-meta">
-                <span class="meta-label">Time Remaining Until</span>
+                <span class="meta-label" id="metaLabel">Time Remaining Until</span>
             </div>
-            <h1>UK Daylight<br>Saving Time</h1>
+            <h1 id="mainTitle">UK Daylight<br>Saving Time</h1>
             <p class="description" id="description">Loading...</p>
         </header>
 
@@ -86,7 +86,7 @@
                     </div>
                     <div class="countdown-label">
                         <span class="unit" id="unitLabel">seconds</span>
-                        <span class="unit-detail">until clocks change</span>
+                        <span class="unit-detail" id="unitDetail">until clocks change</span>
                     </div>
                 </div>
 
@@ -104,11 +104,11 @@
 
             <aside class="info-section">
                 <div class="info-block">
-                    <span class="label">Target Date</span>
+                    <span class="label" id="targetDateLabel">Target Date</span>
                     <span class="value" id="targetDate">—</span>
                 </div>
                 <div class="info-block">
-                    <span class="label">Event</span>
+                    <span class="label" id="eventTypeLabel">Event</span>
                     <span class="value" id="eventType">—</span>
                 </div>
             </aside>
@@ -116,9 +116,9 @@
 
         <footer>
             <p class="footer-text">
-                <span>Source: <a href="https://www.gov.uk/when-do-the-clocks-change" target="_blank" rel="noopener">GOV.UK</a></span>
+                <span><span id="sourceLabel">Source</span>: <a href="https://www.gov.uk/when-do-the-clocks-change" target="_blank" rel="noopener" id="sourceLink">GOV.UK</a></span>
                 <span class="footer-sep">·</span>
-                <span><a href="https://buymeacoffee.com/jimthree" target="_blank" rel="noopener">☕ Buy me a coffee</a></span>
+                <span><a href="https://buymeacoffee.com/jimthree" target="_blank" rel="noopener" id="coffeeLink">☕ Buy me a coffee</a></span>
             </p>
         </footer>
 
@@ -147,6 +147,13 @@
                     <div class="setting-options">
                         <button class="format-btn active" data-format="seconds">Seconds</button>
                         <button class="format-btn" data-format="full">Full</button>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Mood</span>
+                    <div class="setting-options">
+                        <button class="mood-btn active" data-mood="plain">Plain</button>
+                        <button class="mood-btn" data-mood="emotional">Emotional</button>
                     </div>
                 </div>
             </div>

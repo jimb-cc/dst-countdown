@@ -29,6 +29,17 @@ const settingsClose = document.getElementById('settingsClose');
 const settingsOverlay = document.getElementById('settingsOverlay');
 const darkModeToggle = document.getElementById('darkModeToggle');
 const formatButtons = document.querySelectorAll('.format-btn');
+const moodButtons = document.querySelectorAll('.mood-btn');
+
+// Mood text elements
+const metaLabelElement = document.getElementById('metaLabel');
+const mainTitleElement = document.getElementById('mainTitle');
+const unitDetailElement = document.getElementById('unitDetail');
+const targetDateLabelElement = document.getElementById('targetDateLabel');
+const eventTypeLabelElement = document.getElementById('eventTypeLabel');
+const sourceLabelElement = document.getElementById('sourceLabel');
+const sourceLinkElement = document.getElementById('sourceLink');
+const coffeeLinkElement = document.getElementById('coffeeLink');
 
 // State
 let targetTimestamp = null;
@@ -37,6 +48,46 @@ let eventData = null;
 let countdownInterval = null;
 let timeFormat = localStorage.getItem('timeFormat') || 'seconds';
 let darkMode = localStorage.getItem('darkMode') !== 'false'; // Default to true
+let mood = localStorage.getItem('mood') || 'plain';
+
+// Emotional copy - the despair of British winter rendered in Swiss precision
+const emotionalCopy = {
+    metaLabel: 'How Much Longer Must I Endure',
+    mainTitle: 'This Wretched<br>Sunless Void',
+    unitDetail: 'of this soul-crushing darkness',
+    targetDateLabel: 'My Only Hope',
+    eventTypeLabel: 'The Prophecy',
+    eventTypeForward: 'Light Returns To This Forsaken Land',
+    eventTypeBackward: 'Descent Into The Abyss',
+    descriptionForward: 'Until blessed daylight graces my miserable existence once more',
+    descriptionBackward: 'Until darkness consumes what remains of my will to live',
+    sourceLabel: 'The Cold Hard Truth',
+    sourceLink: 'The Government',
+    coffeeLink: '🕯️ A flicker of hope',
+    prevLabelToGMT: 'The Before Times',
+    nextLabelToGMT: 'Eternal Night',
+    prevLabelToBST: 'The Darkness',
+    nextLabelToBST: 'Salvation'
+};
+
+const plainCopy = {
+    metaLabel: 'Time Remaining Until',
+    mainTitle: 'UK Daylight<br>Saving Time',
+    unitDetail: 'until clocks change',
+    targetDateLabel: 'Target Date',
+    eventTypeLabel: 'Event',
+    eventTypeForward: 'Clocks Forward',
+    eventTypeBackward: 'Clocks Back',
+    descriptionForward: 'Until clocks go forward (BST begins)',
+    descriptionBackward: 'Until clocks go back (GMT begins)',
+    sourceLabel: 'Source',
+    sourceLink: 'GOV.UK',
+    coffeeLink: '☕ Buy me a coffee',
+    prevLabelToGMT: 'BST',
+    nextLabelToGMT: 'GMT',
+    prevLabelToBST: 'GMT',
+    nextLabelToBST: 'BST'
+};
 
 // Initialize
 async function init() {
@@ -65,8 +116,16 @@ function applySettings() {
         btn.classList.toggle('active', btn.dataset.format === timeFormat);
     });
 
+    // Mood
+    moodButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mood === mood);
+    });
+
     // Apply time format display
     updateTimeFormatDisplay();
+
+    // Apply mood
+    applyMood();
 }
 
 // Update which countdown display is visible
@@ -79,6 +138,66 @@ function updateTimeFormatDisplay() {
         countdownElement.classList.add('hidden');
         countdownFullElement.classList.add('active');
         unitLabelElement.textContent = '';
+    }
+}
+
+// Apply mood copy throughout the page
+function applyMood() {
+    const copy = mood === 'emotional' ? emotionalCopy : plainCopy;
+
+    metaLabelElement.textContent = copy.metaLabel;
+    // Main title uses <br> - safe hardcoded content
+    setTitleContent(copy.mainTitle);
+    unitDetailElement.textContent = copy.unitDetail;
+    targetDateLabelElement.textContent = copy.targetDateLabel;
+    eventTypeLabelElement.textContent = copy.eventTypeLabel;
+    sourceLabelElement.textContent = copy.sourceLabel;
+    sourceLinkElement.textContent = copy.sourceLink;
+    setCoffeeLinkContent(copy.coffeeLink);
+
+    // Update event-specific text if we have event data
+    if (eventData) {
+        updateEventText();
+    }
+}
+
+// Set title content with line break (safe - hardcoded values only)
+function setTitleContent(titleText) {
+    const parts = titleText.split('<br>');
+    mainTitleElement.textContent = '';
+    parts.forEach((part, index) => {
+        mainTitleElement.appendChild(document.createTextNode(part));
+        if (index < parts.length - 1) {
+            mainTitleElement.appendChild(document.createElement('br'));
+        }
+    });
+}
+
+// Set coffee link content (safe - hardcoded values only)
+function setCoffeeLinkContent(text) {
+    coffeeLinkElement.textContent = text;
+}
+
+// Update event-specific text based on mood and event type
+function updateEventText() {
+    const copy = mood === 'emotional' ? emotionalCopy : plainCopy;
+    const isForward = eventData.type === 'forward';
+
+    // Update description
+    descriptionElement.textContent = isForward ? copy.descriptionForward : copy.descriptionBackward;
+
+    // Update event type
+    eventTypeElement.textContent = isForward ? copy.eventTypeForward : copy.eventTypeBackward;
+
+    // Update progress bar labels
+    if (isForward) {
+        // Going to BST (forward in March)
+        prevLabelElement.textContent = copy.prevLabelToBST;
+        nextLabelElement.textContent = copy.nextLabelToBST;
+    } else {
+        // Going to GMT (backward in October)
+        prevLabelElement.textContent = copy.prevLabelToGMT;
+        nextLabelElement.textContent = copy.nextLabelToGMT;
     }
 }
 
@@ -131,6 +250,17 @@ function initSettings() {
             updateCountdown(); // Immediate update
         });
     });
+
+    // Mood buttons
+    moodButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            mood = btn.dataset.mood;
+            moodButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            localStorage.setItem('mood', mood);
+            applyMood();
+        });
+    });
 }
 
 // Fetch DST data from server
@@ -145,21 +275,11 @@ async function fetchDSTData() {
     targetTimestamp = eventData.timestamp;
     previousTimestamp = eventData.previousEvent ? eventData.previousEvent.timestamp : null;
 
-    // Update static information
-    descriptionElement.textContent = eventData.description;
+    // Update target date (this doesn't change with mood)
     targetDateElement.textContent = formatDate(new Date(eventData.targetDate));
-    eventTypeElement.textContent = eventData.type === 'forward' ? 'Clocks Forward' : 'Clocks Back';
 
-    // Update GMT/BST labels based on event type
-    // If next event is 'forward' (March), we're going FROM GMT TO BST
-    // If next event is 'backward' (October), we're going FROM BST TO GMT
-    if (eventData.type === 'forward') {
-        prevLabelElement.textContent = 'GMT';
-        nextLabelElement.textContent = 'BST';
-    } else {
-        prevLabelElement.textContent = 'BST';
-        nextLabelElement.textContent = 'GMT';
-    }
+    // Update mood-dependent text
+    updateEventText();
 
     // Set initial progress
     if (eventData.progressPercent !== undefined) {

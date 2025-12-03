@@ -576,10 +576,35 @@ footer {
     border-color: var(--color-black);
 }
 
-.format-btn.active {
+.format-btn.active,
+.mood-btn.active {
     background-color: var(--color-black);
     border-color: var(--color-black);
     color: var(--color-white);
+}
+
+/* Mood Buttons - same style as format buttons */
+.mood-btn {
+    padding: var(--space-1) var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-gray-light);
+    color: var(--color-gray-mid);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mood-btn:first-child {
+    border-right: none;
+}
+
+.mood-btn:hover {
+    color: var(--color-black);
+    border-color: var(--color-black);
 }
 
 /* ==========================================
