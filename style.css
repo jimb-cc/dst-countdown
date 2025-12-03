@@ -1,222 +1,419 @@
-/* Swiss Design Style - UK DST Countdown */
+/*
+ * Swiss International Typographic Style
+ * UK Daylight Saving Time Countdown
+ *
+ * Design Principles Applied:
+ * - Mathematical grid system (8px base unit)
+ * - Asymmetric balance with strong left alignment
+ * - Limited color: black, white, Swiss red accent
+ * - Objective typography hierarchy
+ * - Generous whitespace
+ */
 
-* {
+/* ==========================================
+   CSS Custom Properties (Design Tokens)
+   ========================================== */
+:root {
+    /* Swiss Color Palette */
+    --color-black: #0a0a0a;
+    --color-white: #fafafa;
+    --color-swiss-red: #da291c;  /* Official Swiss flag red */
+    --color-gray-dark: #404040;
+    --color-gray-mid: #808080;
+    --color-gray-light: #d0d0d0;
+
+    /* Typography Scale (based on 1.333 - Perfect Fourth) */
+    --font-display: 'Archivo', 'Helvetica Neue', Helvetica, sans-serif;
+    --font-numbers: 'Archivo', 'Helvetica Neue', Helvetica, sans-serif;
+
+    --text-xs: 0.75rem;      /* 12px */
+    --text-sm: 0.875rem;     /* 14px */
+    --text-base: 1rem;       /* 16px */
+    --text-lg: 1.333rem;     /* 21px */
+    --text-xl: 1.777rem;     /* 28px */
+    --text-2xl: 2.369rem;    /* 38px */
+    --text-3xl: 3.157rem;    /* 50px */
+    --text-4xl: 4.209rem;    /* 67px */
+    --text-hero: clamp(4rem, 10vw, 7rem);
+
+    /* Spacing Scale (8px base unit - Swiss grid) */
+    --space-1: 0.5rem;       /* 8px */
+    --space-2: 1rem;         /* 16px */
+    --space-3: 1.5rem;       /* 24px */
+    --space-4: 2rem;         /* 32px */
+    --space-5: 3rem;         /* 48px */
+    --space-6: 4rem;         /* 64px */
+    --space-7: 6rem;         /* 96px */
+    --space-8: 8rem;         /* 128px */
+
+    /* Layout */
+    --max-width: 1400px;
+    --grid-gutter: var(--space-4);
+}
+
+/* ==========================================
+   Reset & Base
+   ========================================== */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #ffffff;
-    color: #000000;
-    line-height: 1.4;
+    font-family: var(--font-display);
+    font-weight: 400;
+    background-color: var(--color-white);
+    color: var(--color-black);
+    line-height: 1.5;
     min-height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
+    flex-direction: column;
 }
 
+/* ==========================================
+   Container & Grid System
+   ========================================== */
 .container {
-    max-width: 1200px;
     width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--space-5) var(--space-4);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
 }
 
-/* Header */
+/* ==========================================
+   Header - Swiss Asymmetric Layout
+   ========================================== */
 header {
-    margin-bottom: 4rem;
+    margin-bottom: var(--space-7);
+    padding-left: var(--space-1);
+    border-left: 4px solid var(--color-black);
+}
+
+.header-meta {
+    margin-bottom: var(--space-2);
+}
+
+.meta-label {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-gray-mid);
 }
 
 h1 {
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 0.9;
+    font-family: var(--font-display);
+    font-size: clamp(var(--text-3xl), 8vw, var(--text-4xl));
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
     text-transform: uppercase;
-}
-
-/* Main Content */
-main {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 4rem;
-    margin-bottom: 4rem;
-}
-
-/* Countdown Section */
-.countdown-section {
-    padding-right: 4rem;
-    border-right: 1px solid #000000;
-    min-width: 0;
+    margin-bottom: var(--space-3);
 }
 
 .description {
-    font-size: 1.125rem;
-    font-weight: 400;
-    margin-bottom: 2rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.15em;
+    color: var(--color-gray-dark);
+}
+
+/* ==========================================
+   Main Content - Two Column Swiss Grid
+   ========================================== */
+main {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-6);
+    align-items: start;
+}
+
+/* ==========================================
+   Countdown Section
+   ========================================== */
+.countdown-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.countdown-wrapper {
+    position: relative;
 }
 
 .countdown {
-    font-family: 'Helvetica Neue', Helvetica, 'SF Mono', Monaco, 'Courier New', monospace;
-    font-size: clamp(3rem, 12vw, 8rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    font-family: var(--font-numbers);
+    font-size: var(--text-hero);
+    font-weight: 900;
+    letter-spacing: -0.02em;
     line-height: 1;
+    color: var(--color-swiss-red);
     font-variant-numeric: tabular-nums;
-    font-feature-settings: "tnum";
-    color: #ff0000;
-    margin-bottom: 0.5rem;
+    font-feature-settings: "tnum" 1;
+
+    /* Prevent layout shift with fixed-width characters */
     white-space: nowrap;
-    min-width: fit-content;
+    overflow: hidden;
+}
+
+.countdown-label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+    padding-left: 4px;
 }
 
 .unit {
-    font-size: 1rem;
-    font-weight: 400;
+    font-size: var(--text-lg);
+    font-weight: 700;
     text-transform: lowercase;
     letter-spacing: 0.02em;
-    color: #666666;
+    color: var(--color-black);
 }
 
-/* Info Section */
-.info-section {
-    padding-top: 0.5rem;
-}
-
-.info-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.info-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.label {
-    font-size: 0.875rem;
+.unit-detail {
+    font-size: var(--text-sm);
     font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #666666;
+    color: var(--color-gray-mid);
+    letter-spacing: 0.05em;
 }
 
-.value {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-}
-
-/* Progress Bar */
+/* ==========================================
+   Progress Bar - Swiss Precision
+   ========================================== */
 .progress-container {
     width: 100%;
-    height: 4px;
-    background-color: #000000;
-    margin-bottom: 2rem;
+}
+
+.progress-track {
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-gray-light);
     position: relative;
     overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
-    background-color: #ff0000;
+    background-color: var(--color-swiss-red);
     width: 0%;
-    transition: width 0.1s linear;
+    transition: width 0.3s ease-out;
 }
 
-/* Footer */
-footer {
-    padding-top: 2rem;
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--space-1);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-gray-mid);
 }
 
-footer p {
-    font-size: 0.875rem;
-    color: #666666;
+/* ==========================================
+   Info Section - Right Sidebar
+   ========================================== */
+.info-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-left: var(--space-4);
+    border-left: 1px solid var(--color-black);
 }
 
-footer a {
-    color: #000000;
+.info-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.label {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-gray-mid);
+}
+
+.value {
+    font-size: var(--text-base);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-black);
+}
+
+.source-link {
+    color: var(--color-black);
     text-decoration: none;
-    border-bottom: 1px solid #000000;
-    transition: opacity 0.2s ease;
+    display: inline-block;
+    position: relative;
 }
 
-footer a:hover {
-    opacity: 0.6;
+.source-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-black);
+    transform: scaleX(1);
+    transform-origin: left;
+    transition: transform 0.2s ease;
 }
 
-/* Error State */
+.source-link:hover::after {
+    transform: scaleX(0);
+    transform-origin: right;
+}
+
+/* ==========================================
+   Footer - Swiss Rule Line
+   ========================================== */
+footer {
+    margin-top: var(--space-7);
+    padding-top: var(--space-4);
+}
+
+.footer-rule {
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-black);
+    margin-bottom: var(--space-3);
+}
+
+.footer-text {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-gray-mid);
+}
+
+/* ==========================================
+   Error State
+   ========================================== */
 .error {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #ff0000;
-    color: #ffffff;
-    padding: 2rem;
-    font-size: 1.125rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-swiss-red);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    z-index: 1000;
+}
+
+.error p {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
     font-weight: 700;
     text-align: center;
-    max-width: 500px;
-    width: 90%;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
 }
 
 .error.hidden {
     display: none;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    body {
-        padding: 1.5rem;
-    }
-
+/* ==========================================
+   Responsive Design - Mobile First
+   ========================================== */
+@media (max-width: 900px) {
     main {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: var(--space-5);
     }
 
-    .countdown-section {
-        padding-right: 0;
-        border-right: none;
-        border-bottom: 1px solid #000000;
-        padding-bottom: 3rem;
+    .info-section {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--space-4);
+        padding-left: 0;
+        padding-top: var(--space-4);
+        border-left: none;
+        border-top: 1px solid var(--color-black);
     }
 
-    h1 {
-        margin-bottom: 3rem;
+    .info-block {
+        flex: 1;
+        min-width: 120px;
     }
 }
 
-@media (max-width: 480px) {
-    body {
-        padding: 1rem;
+@media (max-width: 600px) {
+    :root {
+        --text-hero: clamp(2.5rem, 15vw, 4rem);
+    }
+
+    .container {
+        padding: var(--space-4) var(--space-3);
     }
 
     header {
-        margin-bottom: 2rem;
+        margin-bottom: var(--space-5);
     }
 
-    main {
-        gap: 2rem;
-        margin-bottom: 2rem;
+    h1 {
+        font-size: clamp(var(--text-2xl), 10vw, var(--text-3xl));
     }
 
     .countdown-section {
-        padding-bottom: 2rem;
+        gap: var(--space-4);
     }
 
-    .description {
-        font-size: 0.875rem;
-        margin-bottom: 1.5rem;
+    .progress-labels {
+        font-size: 0.625rem;
     }
 
-    .info-grid {
-        gap: 1.5rem;
+    .info-section {
+        flex-direction: column;
+        gap: var(--space-3);
+    }
+
+    .info-block {
+        min-width: 100%;
+    }
+
+    footer {
+        margin-top: var(--space-5);
+    }
+}
+
+/* ==========================================
+   Print Styles
+   ========================================== */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    .countdown {
+        color: black;
+    }
+
+    .progress-container,
+    .error {
+        display: none;
     }
 }

@@ -4,46 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UK Daylight Saving Time Countdown</title>
+
+    <!-- Swiss Typography: Archivo grotesque from Google Fonts -->
+    <!-- Archivo: Modern grotesque with excellent tabular figures, used throughout -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
+        <!-- Swiss grid: asymmetric layout with strong left alignment -->
         <header>
+            <div class="header-meta">
+                <span class="meta-label">Time Remaining Until</span>
+            </div>
             <h1>UK Daylight<br>Saving Time</h1>
+            <p class="description" id="description">Loading...</p>
         </header>
 
         <main>
             <div class="countdown-section">
-                <p class="description" id="description">Loading...</p>
-                <div class="countdown" id="countdown">—</div>
-                <p class="unit">seconds</p>
-            </div>
-
-            <div class="info-section">
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="label">Target Date</span>
-                        <span class="value" id="targetDate">—</span>
+                <div class="countdown-wrapper">
+                    <div class="countdown" id="countdown">—</div>
+                    <div class="countdown-label">
+                        <span class="unit">seconds</span>
+                        <span class="unit-detail">until clocks change</span>
                     </div>
-                    <div class="info-item">
-                        <span class="label">Event Type</span>
-                        <span class="value" id="eventType">—</span>
+                </div>
+
+                <!-- Progress indicator with Swiss precision -->
+                <div class="progress-container">
+                    <div class="progress-track">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>Previous change</span>
+                        <span>Next change</span>
                     </div>
                 </div>
             </div>
+
+            <aside class="info-section">
+                <div class="info-block">
+                    <span class="label">Target Date</span>
+                    <span class="value" id="targetDate">—</span>
+                </div>
+                <div class="info-block">
+                    <span class="label">Event</span>
+                    <span class="value" id="eventType">—</span>
+                </div>
+                <div class="info-block">
+                    <span class="label">Source</span>
+                    <a href="https://www.gov.uk/when-do-the-clocks-change" target="_blank" rel="noopener" class="value source-link">GOV.UK</a>
+                </div>
+            </aside>
         </main>
 
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-
         <footer>
-            <p>Data source: <a href="https://www.gov.uk/when-do-the-clocks-change" target="_blank" rel="noopener">GOV.UK</a></p>
+            <div class="footer-rule"></div>
+            <p class="footer-text">Daylight Saving Time · United Kingdom</p>
         </footer>
     </div>
 
     <div id="error" class="error hidden">
-        <p>Failed to load DST information. Please refresh the page.</p>
+        <p>Failed to load DST information.<br>Please refresh the page.</p>
     </div>
 
     <script src="script.js"></script>
