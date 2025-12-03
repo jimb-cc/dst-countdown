@@ -319,9 +319,9 @@ async function fetchDSTData() {
 function startCountdown() {
     updateCountdown();
 
-    // Update 10 times per second - smooth enough for countdown display
-    // Much more efficient than requestAnimationFrame at 60fps
-    countdownInterval = setInterval(updateCountdown, 100);
+    // Update at ~30fps for smooth decimal blur effect
+    // Good balance between visual smoothness and efficiency
+    countdownInterval = setInterval(updateCountdown, 33);
 }
 
 // Update countdown display
