@@ -47,7 +47,7 @@ let previousTimestamp = null;
 let eventData = null;
 let countdownInterval = null;
 let timeFormat = localStorage.getItem('timeFormat') || 'seconds';
-let darkMode = localStorage.getItem('darkMode') !== 'false'; // Default to true
+let darkMode = localStorage.getItem('darkMode') === 'true'; // Default to false (light mode)
 let mood = localStorage.getItem('mood') || 'plain';
 
 // Emotional copy - the despair of British winter rendered in Swiss precision
