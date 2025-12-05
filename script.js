@@ -37,8 +37,6 @@ const mainTitleElement = document.getElementById('mainTitle');
 const unitDetailElement = document.getElementById('unitDetail');
 const targetDateLabelElement = document.getElementById('targetDateLabel');
 const eventTypeLabelElement = document.getElementById('eventTypeLabel');
-const sourceLabelElement = document.getElementById('sourceLabel');
-const sourceLinkElement = document.getElementById('sourceLink');
 const coffeeLinkElement = document.getElementById('coffeeLink');
 
 // State
@@ -61,8 +59,6 @@ const emotionalCopy = {
     eventTypeBackward: 'Descent Into The Abyss',
     descriptionForward: 'Until blessed daylight graces my miserable existence once more',
     descriptionBackward: 'Until darkness consumes what remains of my will to live',
-    sourceLabel: 'The Cold Hard Truth',
-    sourceLink: 'The Government',
     coffeeLink: '🕯️ A flicker of hope',
     prevLabelToGMT: 'The Before Times',
     nextLabelToGMT: 'Eternal Night',
@@ -80,8 +76,6 @@ const plainCopy = {
     eventTypeBackward: 'Clocks Back',
     descriptionForward: 'Until clocks go forward (BST begins)',
     descriptionBackward: 'Until clocks go back (GMT begins)',
-    sourceLabel: 'Source',
-    sourceLink: 'GOV.UK',
     coffeeLink: '☕ Buy me a coffee',
     prevLabelToGMT: 'BST',
     nextLabelToGMT: 'GMT',
@@ -151,8 +145,6 @@ function applyMood() {
     unitDetailElement.textContent = copy.unitDetail;
     targetDateLabelElement.textContent = copy.targetDateLabel;
     eventTypeLabelElement.textContent = copy.eventTypeLabel;
-    sourceLabelElement.textContent = copy.sourceLabel;
-    sourceLinkElement.textContent = copy.sourceLink;
     setCoffeeLinkContent(copy.coffeeLink);
 
     // Update event-specific text if we have event data
