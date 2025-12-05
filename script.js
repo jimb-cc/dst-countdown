@@ -32,7 +32,13 @@ const settingsOverlay = document.getElementById('settingsOverlay');
 const darkModeToggle = document.getElementById('darkModeToggle');
 const formatButtons = document.querySelectorAll('.format-btn');
 const moodButtons = document.querySelectorAll('.mood-btn');
-const countrySelect = document.getElementById('countrySelect');
+
+// Custom country dropdown elements
+const countryDropdown = document.getElementById('countryDropdown');
+const countryDropdownTrigger = document.getElementById('countryDropdownTrigger');
+const countryDropdownMenu = document.getElementById('countryDropdownMenu');
+const selectedFlagElement = document.getElementById('selectedFlag');
+const selectedCountryTextElement = document.getElementById('selectedCountryText');
 
 // Mood text elements
 const metaLabelElement = document.getElementById('metaLabel');
@@ -227,11 +233,32 @@ async function loadCountriesData() {
     populateCountrySelector();
 }
 
-// Populate country selector dropdown
+// Create a dropdown option element safely (no innerHTML)
+function createDropdownOption(value, flag, text) {
+    const option = document.createElement('button');
+    option.type = 'button';
+    option.className = 'country-dropdown-option';
+    option.dataset.value = value;
+
+    const flagSpan = document.createElement('span');
+    flagSpan.className = 'country-dropdown-option-flag';
+    flagSpan.textContent = flag;
+
+    const textSpan = document.createElement('span');
+    textSpan.className = 'country-dropdown-option-text';
+    textSpan.textContent = text;
+
+    option.appendChild(flagSpan);
+    option.appendChild(textSpan);
+
+    return option;
+}
+
+// Populate custom country dropdown
 function populateCountrySelector() {
-    // Clear existing options except auto
-    while (countrySelect.options.length > 1) {
-        countrySelect.remove(1);
+    // Clear existing menu content
+    while (countryDropdownMenu.firstChild) {
+        countryDropdownMenu.removeChild(countryDropdownMenu.firstChild);
     }
 
     // Group countries by region
@@ -243,6 +270,12 @@ function populateCountrySelector() {
         .sort((a, b) => a[1].order - b[1].order)
         .map(([key]) => key);
 
+    // Add "Auto-detect" option first
+    const autoGroup = document.createElement('div');
+    autoGroup.className = 'country-dropdown-group';
+    autoGroup.appendChild(createDropdownOption('auto', '🌍', 'Auto-detect'));
+    countryDropdownMenu.appendChild(autoGroup);
+
     // Add countries grouped by region
     for (const regionKey of sortedRegions) {
         const regionCountries = Object.entries(countries)
@@ -250,22 +283,85 @@ function populateCountrySelector() {
             .sort((a, b) => a[1].name.localeCompare(b[1].name));
 
         if (regionCountries.length > 0) {
-            const optgroup = document.createElement('optgroup');
-            optgroup.label = regions[regionKey].name;
+            const group = document.createElement('div');
+            group.className = 'country-dropdown-group';
+
+            const groupLabel = document.createElement('div');
+            groupLabel.className = 'country-dropdown-group-label';
+            groupLabel.textContent = regions[regionKey].name;
+            group.appendChild(groupLabel);
 
             for (const [code, info] of regionCountries) {
-                const option = document.createElement('option');
-                option.value = code;
-                option.textContent = `${info.flag} ${info.name}`;
-                optgroup.appendChild(option);
+                group.appendChild(createDropdownOption(code, info.flag, info.name));
             }
 
-            countrySelect.appendChild(optgroup);
+            countryDropdownMenu.appendChild(group);
         }
     }
 
-    // Set the current value
-    countrySelect.value = selectedCountry;
+    // Parse flags with Twemoji for cross-platform rendering
+    if (typeof twemoji !== 'undefined') {
+        twemoji.parse(countryDropdownMenu, {
+            folder: 'svg',
+            ext: '.svg'
+        });
+    }
+
+    // Update the trigger to show current selection
+    updateCountryDropdownDisplay();
+}
+
+// Update the dropdown trigger to show current selection
+function updateCountryDropdownDisplay() {
+    let flag = '🌍';
+    let text = 'Auto-detect';
+
+    if (selectedCountry === 'auto') {
+        // Show detected country if available
+        if (detectedCountry && countriesData?.countries[detectedCountry]) {
+            const country = countriesData.countries[detectedCountry];
+            text = `Auto (${country.name})`;
+            flag = country.flag;
+        }
+    } else if (countriesData?.countries[selectedCountry]) {
+        const country = countriesData.countries[selectedCountry];
+        text = country.name;
+        flag = country.flag;
+    }
+
+    selectedFlagElement.textContent = flag;
+    selectedCountryTextElement.textContent = text;
+
+    // Parse the trigger flag with Twemoji
+    if (typeof twemoji !== 'undefined') {
+        twemoji.parse(selectedFlagElement, {
+            folder: 'svg',
+            ext: '.svg'
+        });
+    }
+
+    // Update selected state in menu
+    countryDropdownMenu.querySelectorAll('.country-dropdown-option').forEach(opt => {
+        opt.classList.toggle('selected', opt.dataset.value === selectedCountry);
+    });
+}
+
+// Toggle dropdown open/closed
+function toggleCountryDropdown(open) {
+    const isOpen = open !== undefined ? open : !countryDropdown.classList.contains('open');
+    countryDropdown.classList.toggle('open', isOpen);
+    countryDropdownTrigger.setAttribute('aria-expanded', isOpen);
+}
+
+// Handle country selection from dropdown
+function selectCountry(value) {
+    selectedCountry = value;
+    localStorage.setItem('country', selectedCountry);
+    toggleCountryDropdown(false);
+    updateCountryDropdownDisplay();
+
+    // Fetch new data and update locale
+    fetchDSTData().then(() => updateLocale());
 }
 
 // Apply saved settings on load
@@ -419,12 +515,29 @@ function initSettings() {
         });
     });
 
-    // Country selector
-    countrySelect.addEventListener('change', async () => {
-        const newCountry = countrySelect.value;
+    // Custom country dropdown
+    countryDropdownTrigger.addEventListener('click', () => {
+        toggleCountryDropdown();
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!countryDropdown.contains(e.target)) {
+            toggleCountryDropdown(false);
+        }
+    });
+
+    // Handle country option selection
+    countryDropdownMenu.addEventListener('click', async (e) => {
+        const option = e.target.closest('.country-dropdown-option');
+        if (!option) return;
+
+        const newCountry = option.dataset.value;
         if (newCountry !== selectedCountry) {
             selectedCountry = newCountry;
             localStorage.setItem('country', selectedCountry);
+            toggleCountryDropdown(false);
+            updateCountryDropdownDisplay();
 
             // Stop current countdown and fetch new data
             if (countdownInterval) {
@@ -439,6 +552,18 @@ function initSettings() {
                 console.error('Failed to fetch DST data for new country:', error);
                 showError();
             }
+        } else {
+            toggleCountryDropdown(false);
+        }
+    });
+
+    // Keyboard navigation for dropdown
+    countryDropdownTrigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleCountryDropdown();
+        } else if (e.key === 'Escape') {
+            toggleCountryDropdown(false);
         }
     });
 }
@@ -514,17 +639,10 @@ async function fetchDSTData(forceRefresh = false) {
     updateSolsticeMarker();
 }
 
-// Update country display in the selector
+// Update country display in the dropdown trigger
 function updateCountryDisplay() {
-    // Update the auto-detect option to show detected country
-    const autoOption = countrySelect.querySelector('option[value="auto"]');
-    if (autoOption && detectedCountry && countriesData && countriesData.countries[detectedCountry]) {
-        const countryInfo = countriesData.countries[detectedCountry];
-        autoOption.textContent = `Auto-detect (${countryInfo.flag} ${countryInfo.name})`;
-    } else if (autoOption && detectedCountry) {
-        // Country detected but not in our list
-        autoOption.textContent = `Auto-detect (${detectedCountry})`;
-    }
+    // Use the new custom dropdown display function
+    updateCountryDropdownDisplay();
 }
 
 // Start countdown timer

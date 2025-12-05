@@ -42,6 +42,9 @@
     <!-- Vercel Web Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
 
+    <!-- Twemoji for cross-platform flag emoji rendering (Windows doesn't display flag emojis natively) -->
+    <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
     {
@@ -180,10 +183,15 @@
                 </div>
                 <div class="setting-item">
                     <span class="setting-label">Country</span>
-                    <div class="country-selector">
-                        <select id="countrySelect">
-                            <option value="auto">Auto-detect</option>
-                        </select>
+                    <div class="country-dropdown" id="countryDropdown">
+                        <button class="country-dropdown-trigger" id="countryDropdownTrigger" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="country-dropdown-flag" id="selectedFlag"></span>
+                            <span class="country-dropdown-text" id="selectedCountryText">Auto-detect</span>
+                            <span class="country-dropdown-arrow"></span>
+                        </button>
+                        <div class="country-dropdown-menu" id="countryDropdownMenu" role="listbox">
+                            <!-- Populated by JavaScript -->
+                        </div>
                     </div>
                 </div>
             </div>
