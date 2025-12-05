@@ -10,8 +10,29 @@
  */
 
 const { DateTime } = require('luxon');
-const path = require('path');
-const countriesData = require(path.join(__dirname, '..', 'data', 'countries.json'));
+
+// Countries data embedded directly to avoid file system issues on Vercel
+const countriesData = {
+    countries: {
+        GB: { name: "United Kingdom", timezone: "Europe/London", locale: "en-GB", hasDST: true, flag: "🇬🇧", region: "europe" },
+        SE: { name: "Sweden", timezone: "Europe/Stockholm", locale: "sv", hasDST: true, flag: "🇸🇪", region: "europe" },
+        NO: { name: "Norway", timezone: "Europe/Oslo", locale: "no", hasDST: true, flag: "🇳🇴", region: "europe" },
+        FI: { name: "Finland", timezone: "Europe/Helsinki", locale: "fi", hasDST: true, flag: "🇫🇮", region: "europe" },
+        DE: { name: "Germany", timezone: "Europe/Berlin", locale: "de", hasDST: true, flag: "🇩🇪", region: "europe" },
+        NL: { name: "Netherlands", timezone: "Europe/Amsterdam", locale: "nl", hasDST: true, flag: "🇳🇱", region: "europe" },
+        PL: { name: "Poland", timezone: "Europe/Warsaw", locale: "pl", hasDST: true, flag: "🇵🇱", region: "europe" },
+        FR: { name: "France", timezone: "Europe/Paris", locale: "fr", hasDST: true, flag: "🇫🇷", region: "europe" },
+        IE: { name: "Ireland", timezone: "Europe/Dublin", locale: "en-IE", hasDST: true, flag: "🇮🇪", region: "europe" },
+        DK: { name: "Denmark", timezone: "Europe/Copenhagen", locale: "da", hasDST: true, flag: "🇩🇰", region: "europe" },
+        US: { name: "United States", timezone: "America/New_York", locale: "en-US", hasDST: true, flag: "🇺🇸", region: "northAmerica" },
+        CA: { name: "Canada", timezone: "America/Toronto", locale: "en-CA", hasDST: true, flag: "🇨🇦", region: "northAmerica" },
+        AU: { name: "Australia", timezone: "Australia/Sydney", locale: "en-AU", hasDST: true, flag: "🇦🇺", region: "oceania", southernHemisphere: true },
+        NZ: { name: "New Zealand", timezone: "Pacific/Auckland", locale: "en-NZ", hasDST: true, flag: "🇳🇿", region: "oceania", southernHemisphere: true },
+        CL: { name: "Chile", timezone: "America/Santiago", locale: "es-CL", hasDST: true, flag: "🇨🇱", region: "southAmerica", southernHemisphere: true }
+    },
+    noDST: ["JP", "CN", "IN", "SG", "HK", "TH", "VN", "PH", "MY", "ID", "KR", "AR", "CO", "VE", "PE", "EC", "RU", "TR", "EG", "ZA", "AE", "SA"],
+    defaultCountry: "GB"
+};
 
 module.exports = async (req, res) => {
     try {
