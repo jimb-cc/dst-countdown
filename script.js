@@ -50,42 +50,71 @@ let timeFormat = localStorage.getItem('timeFormat') || 'seconds';
 let darkMode = localStorage.getItem('darkMode') === 'true'; // Default to false (light mode)
 let mood = localStorage.getItem('mood') || 'plain';
 
-// Emotional copy - the despair of British winter rendered in Swiss precision
-const emotionalCopy = {
+// Emotional copy - changes based on whether we're in winter (longing for light) or summer (dreading darkness)
+const emotionalCopyWinter = {
     metaLabel: 'How Much Longer Must I Endure',
     mainTitle: 'This Wretched<br>Sunless Void',
     unitDetail: 'of this soul-crushing darkness',
     targetDateLabel: 'My Only Hope',
     eventTypeLabel: 'The Prophecy',
-    eventTypeForward: 'Light Returns To This Forsaken Land',
-    eventTypeBackward: 'Descent Into The Abyss',
-    descriptionForward: 'Until blessed daylight graces my miserable existence once more',
-    descriptionBackward: 'Until darkness consumes what remains of my will to live',
+    eventTypeValue: 'Light Returns To This Forsaken Land',
+    description: 'Until blessed daylight graces my miserable existence once more',
     coffeeLink: '🕯️ A flicker of hope',
-    prevLabelToGMT: 'The Before Times',
-    nextLabelToGMT: 'Eternal Night',
-    prevLabelToBST: 'Darkness',
-    nextLabelToBST: 'Salvation',
+    prevLabel: 'Darkness',
+    nextLabel: 'Salvation',
     solsticeLabel: 'The Longest Night'
 };
 
-const plainCopy = {
+const emotionalCopySummer = {
+    metaLabel: 'How Much Longer Can I Savour',
+    mainTitle: 'These Precious<br>Golden Days',
+    unitDetail: 'of fleeting summer bliss',
+    targetDateLabel: 'The Inevitable',
+    eventTypeLabel: 'The Doom',
+    eventTypeValue: 'Descent Into The Abyss',
+    description: 'Until darkness consumes what remains of my will to live',
+    coffeeLink: '☀️ Cherish the warmth',
+    prevLabel: 'The Light',
+    nextLabel: 'The Void',
+    solsticeLabel: 'Peak Glory'
+};
+
+const plainCopyWinter = {
     metaLabel: 'Time Remaining Until',
     mainTitle: 'UK Daylight<br>Saving Time',
     unitDetail: 'until clocks change',
     targetDateLabel: 'Target Date',
     eventTypeLabel: 'Event',
-    eventTypeForward: 'Clocks Forward',
-    eventTypeBackward: 'Clocks Back',
-    descriptionForward: 'Until clocks go forward (BST begins)',
-    descriptionBackward: 'Until clocks go back (GMT begins)',
+    eventTypeValue: 'Clocks Forward',
+    description: 'Until clocks go forward (BST begins)',
     coffeeLink: '☕ Buy me a coffee',
-    prevLabelToGMT: 'BST',
-    nextLabelToGMT: 'GMT',
-    prevLabelToBST: 'GMT',
-    nextLabelToBST: 'BST',
+    prevLabel: 'GMT',
+    nextLabel: 'BST',
     solsticeLabel: 'Solstice'
 };
+
+const plainCopySummer = {
+    metaLabel: 'Time Remaining Until',
+    mainTitle: 'UK Daylight<br>Saving Time',
+    unitDetail: 'until clocks change',
+    targetDateLabel: 'Target Date',
+    eventTypeLabel: 'Event',
+    eventTypeValue: 'Clocks Back',
+    description: 'Until clocks go back (GMT begins)',
+    coffeeLink: '☕ Buy me a coffee',
+    prevLabel: 'BST',
+    nextLabel: 'GMT',
+    solsticeLabel: 'Solstice'
+};
+
+// Helper to get the right copy based on mood and season
+function getCopy() {
+    const isWinter = eventData && eventData.type === 'forward';
+    if (mood === 'emotional') {
+        return isWinter ? emotionalCopyWinter : emotionalCopySummer;
+    }
+    return isWinter ? plainCopyWinter : plainCopySummer;
+}
 
 // Initialize
 async function init() {
@@ -141,7 +170,7 @@ function updateTimeFormatDisplay() {
 
 // Apply mood copy throughout the page
 function applyMood() {
-    const copy = mood === 'emotional' ? emotionalCopy : plainCopy;
+    const copy = getCopy();
 
     metaLabelElement.textContent = copy.metaLabel;
     // Main title uses <br> - safe hardcoded content
@@ -177,27 +206,17 @@ function setCoffeeLinkContent(text) {
     coffeeLinkElement.textContent = text;
 }
 
-// Update event-specific text based on mood and event type
+// Update event-specific text based on mood and season
 function updateEventText() {
-    const copy = mood === 'emotional' ? emotionalCopy : plainCopy;
-    const isForward = eventData.type === 'forward';
+    const copy = getCopy();
 
-    // Update description
-    descriptionElement.textContent = isForward ? copy.descriptionForward : copy.descriptionBackward;
-
-    // Update event type
-    eventTypeElement.textContent = isForward ? copy.eventTypeForward : copy.eventTypeBackward;
+    // Update description and event type - now directly from season-specific copy
+    descriptionElement.textContent = copy.description;
+    eventTypeElement.textContent = copy.eventTypeValue;
 
     // Update progress bar labels
-    if (isForward) {
-        // Going to BST (forward in March)
-        prevLabelElement.textContent = copy.prevLabelToBST;
-        nextLabelElement.textContent = copy.nextLabelToBST;
-    } else {
-        // Going to GMT (backward in October)
-        prevLabelElement.textContent = copy.prevLabelToGMT;
-        nextLabelElement.textContent = copy.nextLabelToGMT;
-    }
+    prevLabelElement.textContent = copy.prevLabel;
+    nextLabelElement.textContent = copy.nextLabel;
 }
 
 // Initialize settings panel
@@ -361,11 +380,16 @@ function updateCountdown() {
     }
 }
 
-// Calculate winter solstice date for a given year (approximately Dec 21-22)
+// Calculate winter solstice date for a given year (approximately Dec 21)
 function getWinterSolstice(year) {
-    // Winter solstice is typically Dec 21 or 22, around 21:00-22:00 UTC
-    // Using Dec 21 at 21:00 UTC as a reasonable approximation
+    // Winter solstice is typically Dec 21, around 21:00-22:00 UTC
     return new Date(Date.UTC(year, 11, 21, 21, 0, 0));
+}
+
+// Calculate summer solstice date for a given year (approximately June 21)
+function getSummerSolstice(year) {
+    // Summer solstice is typically June 20-21, around 21:00-22:00 UTC
+    return new Date(Date.UTC(year, 5, 21, 21, 0, 0));
 }
 
 // Update solstice marker position and visibility
@@ -375,17 +399,20 @@ function updateSolsticeMarker() {
         return;
     }
 
-    // Only show solstice marker when counting toward spring (forward/BST)
-    // i.e., when we're in the winter period between Oct clock change and March clock change
-    if (eventData.type !== 'forward') {
-        solsticeMarkerElement.classList.remove('visible');
-        return;
-    }
+    const isWinter = eventData.type === 'forward';
+    let solsticeTimestamp;
 
-    // Find the winter solstice between previous event (Oct) and target (March)
-    const prevDate = new Date(previousTimestamp);
-    const solstice = getWinterSolstice(prevDate.getFullYear());
-    const solsticeTimestamp = solstice.getTime();
+    if (isWinter) {
+        // Winter period (Oct → March): show winter solstice (Dec 21)
+        const prevDate = new Date(previousTimestamp);
+        const solstice = getWinterSolstice(prevDate.getFullYear());
+        solsticeTimestamp = solstice.getTime();
+    } else {
+        // Summer period (March → Oct): show summer solstice (June 21)
+        const prevDate = new Date(previousTimestamp);
+        const solstice = getSummerSolstice(prevDate.getFullYear());
+        solsticeTimestamp = solstice.getTime();
+    }
 
     // Check if solstice falls within our range
     if (solsticeTimestamp <= previousTimestamp || solsticeTimestamp >= targetTimestamp) {
@@ -402,8 +429,8 @@ function updateSolsticeMarker() {
     solsticeMarkerElement.style.left = `${solsticePercent}%`;
     solsticeMarkerElement.classList.add('visible');
 
-    // Update label based on mood
-    const copy = mood === 'emotional' ? emotionalCopy : plainCopy;
+    // Update label based on mood and season
+    const copy = getCopy();
     solsticeLabelElement.textContent = copy.solsticeLabel;
 }
 
