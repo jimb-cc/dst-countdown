@@ -673,16 +673,27 @@ footer {
         --text-hero: clamp(2.5rem, 15vw, 4rem);
     }
 
+    html {
+        overflow: visible;
+        overflow-x: hidden;
+    }
+
     .container {
-        padding: var(--space-4) var(--space-3);
+        padding: var(--space-3) var(--space-2);
+        min-height: 100vh;
+        min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
     }
 
     header {
-        margin-bottom: var(--space-5);
+        margin-bottom: var(--space-4);
     }
 
     h1 {
         font-size: clamp(var(--text-2xl), 10vw, var(--text-3xl));
+    }
+
+    .countdown {
+        font-size: min(11vw, 2.5rem);
     }
 
     .countdown-section {
@@ -703,7 +714,15 @@ footer {
     }
 
     footer {
-        margin-top: var(--space-5);
+        margin-top: var(--space-4);
+        padding-bottom: var(--space-2);
+    }
+
+    .settings-toggle {
+        top: var(--space-2);
+        right: var(--space-2);
+        width: 40px;
+        height: 40px;
     }
 }
 
