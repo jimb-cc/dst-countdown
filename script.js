@@ -64,7 +64,7 @@ const emotionalCopy = {
     coffeeLink: '🕯️ A flicker of hope',
     prevLabelToGMT: 'The Before Times',
     nextLabelToGMT: 'Eternal Night',
-    prevLabelToBST: 'The Darkness',
+    prevLabelToBST: 'Darkness',
     nextLabelToBST: 'Salvation',
     solsticeLabel: 'The Longest Night'
 };
