@@ -334,25 +334,46 @@ footer {
     padding-top: var(--space-4);
 }
 
-.footer-text {
+.footer-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
     font-size: var(--text-xs);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--color-gray-mid);
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    flex-wrap: wrap;
 }
 
-.footer-text a {
+.footer-content a {
     color: var(--color-gray-mid);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
-.footer-text a:hover {
+.footer-content a:hover {
+    color: var(--color-black);
+}
+
+.social-share {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--color-gray-light);
+    transition: all 0.2s ease;
+}
+
+.social-icon:hover {
+    border-color: var(--color-black);
     color: var(--color-black);
 }
 
