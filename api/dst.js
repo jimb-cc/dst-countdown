@@ -10,7 +10,8 @@
  */
 
 const { DateTime } = require('luxon');
-const countriesData = require('../data/countries.json');
+const path = require('path');
+const countriesData = require(path.join(__dirname, '..', 'data', 'countries.json'));
 
 module.exports = async (req, res) => {
     try {
