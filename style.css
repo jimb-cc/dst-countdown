@@ -257,6 +257,22 @@ main {
     transition: width 0.3s ease-out;
 }
 
+.track-tick {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 10px;
+    background-color: var(--color-gray-mid);
+}
+
+.track-tick-start {
+    left: 0;
+}
+
+.track-tick-end {
+    right: 0;
+}
+
 .solstice-marker {
     position: absolute;
     top: 0;
