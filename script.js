@@ -38,6 +38,8 @@ const unitDetailElement = document.getElementById('unitDetail');
 const targetDateLabelElement = document.getElementById('targetDateLabel');
 const eventTypeLabelElement = document.getElementById('eventTypeLabel');
 const coffeeLinkElement = document.getElementById('coffeeLink');
+const solsticeMarkerElement = document.getElementById('solsticeMarker');
+const solsticeLabelElement = document.getElementById('solsticeLabel');
 
 // State
 let targetTimestamp = null;
@@ -63,7 +65,8 @@ const emotionalCopy = {
     prevLabelToGMT: 'The Before Times',
     nextLabelToGMT: 'Eternal Night',
     prevLabelToBST: 'The Darkness',
-    nextLabelToBST: 'Salvation'
+    nextLabelToBST: 'Salvation',
+    solsticeLabel: 'The Longest Night'
 };
 
 const plainCopy = {
@@ -80,7 +83,8 @@ const plainCopy = {
     prevLabelToGMT: 'BST',
     nextLabelToGMT: 'GMT',
     prevLabelToBST: 'GMT',
-    nextLabelToBST: 'BST'
+    nextLabelToBST: 'BST',
+    solsticeLabel: 'Solstice'
 };
 
 // Initialize
@@ -151,6 +155,9 @@ function applyMood() {
     if (eventData) {
         updateEventText();
     }
+
+    // Update solstice label
+    updateSolsticeMarker();
 }
 
 // Set title content with line break (safe - hardcoded values only)
@@ -305,6 +312,9 @@ async function fetchDSTData() {
     if (eventData.progressPercent !== undefined) {
         progressBarElement.style.width = `${eventData.progressPercent}%`;
     }
+
+    // Update solstice marker
+    updateSolsticeMarker();
 }
 
 // Start countdown timer
@@ -349,6 +359,52 @@ function updateCountdown() {
         const progressPercent = (elapsed / totalDuration) * 100;
         progressBarElement.style.width = `${Math.min(100, Math.max(0, progressPercent))}%`;
     }
+}
+
+// Calculate winter solstice date for a given year (approximately Dec 21-22)
+function getWinterSolstice(year) {
+    // Winter solstice is typically Dec 21 or 22, around 21:00-22:00 UTC
+    // Using Dec 21 at 21:00 UTC as a reasonable approximation
+    return new Date(Date.UTC(year, 11, 21, 21, 0, 0));
+}
+
+// Update solstice marker position and visibility
+function updateSolsticeMarker() {
+    if (!previousTimestamp || !targetTimestamp || !eventData) {
+        solsticeMarkerElement.classList.remove('visible');
+        return;
+    }
+
+    // Only show solstice marker when counting toward spring (forward/BST)
+    // i.e., when we're in the winter period between Oct clock change and March clock change
+    if (eventData.type !== 'forward') {
+        solsticeMarkerElement.classList.remove('visible');
+        return;
+    }
+
+    // Find the winter solstice between previous event (Oct) and target (March)
+    const prevDate = new Date(previousTimestamp);
+    const solstice = getWinterSolstice(prevDate.getFullYear());
+    const solsticeTimestamp = solstice.getTime();
+
+    // Check if solstice falls within our range
+    if (solsticeTimestamp <= previousTimestamp || solsticeTimestamp >= targetTimestamp) {
+        solsticeMarkerElement.classList.remove('visible');
+        return;
+    }
+
+    // Calculate position as percentage
+    const totalDuration = targetTimestamp - previousTimestamp;
+    const solsticeOffset = solsticeTimestamp - previousTimestamp;
+    const solsticePercent = (solsticeOffset / totalDuration) * 100;
+
+    // Position the marker
+    solsticeMarkerElement.style.left = `${solsticePercent}%`;
+    solsticeMarkerElement.classList.add('visible');
+
+    // Update label based on mood
+    const copy = mood === 'emotional' ? emotionalCopy : plainCopy;
+    solsticeLabelElement.textContent = copy.solsticeLabel;
 }
 
 // Format number as seconds with 2 decimal places and commas
