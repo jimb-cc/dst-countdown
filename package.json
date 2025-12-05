@@ -1,0 +1,25 @@
+{
+  "name": "uk-dst-countdown",
+  "version": "1.0.0",
+  "description": "UK Daylight Saving Time countdown in milliseconds with Swiss design",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "daylight-saving",
+    "uk",
+    "dst",
+    "countdown",
+    "swiss-design"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "compression": "^1.8.1",
+    "express": "^4.18.2"
+  },
+  "dependencies": {
+    "luxon": "^3.7.2"
+  }
+}

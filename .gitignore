@@ -4,8 +4,6 @@ samconfig.toml
 
 # Node
 node_modules/
-package.json
-package-lock.json
 
 # Local development only
 server.js
