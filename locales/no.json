@@ -1,0 +1,97 @@
+{
+  "locale": "no",
+  "language": "Norsk",
+  "region": "Norge",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Tid Igjen Til",
+      "mainTitle": "Norsk\nSommertid",
+      "unitDetail": "til klokken stilles om",
+      "targetDateLabel": "Maldato",
+      "eventTypeLabel": "Hendelse",
+      "eventTypeValue": "Klokken Frem",
+      "description": "Til klokken stilles frem (sommertid begynner)",
+      "coffeeLink": "Kjop meg en kaffe",
+      "prevLabel": "Vintertid",
+      "nextLabel": "Sommertid",
+      "solsticeLabel": "Solverv"
+    },
+    "summer": {
+      "metaLabel": "Tid Igjen Til",
+      "mainTitle": "Norsk\nSommertid",
+      "unitDetail": "til klokken stilles om",
+      "targetDateLabel": "Maldato",
+      "eventTypeLabel": "Hendelse",
+      "eventTypeValue": "Klokken Tilbake",
+      "description": "Til klokken stilles tilbake (vintertid begynner)",
+      "coffeeLink": "Kjop meg en kaffe",
+      "prevLabel": "Sommertid",
+      "nextLabel": "Vintertid",
+      "solsticeLabel": "Solverv"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "Hvor Lenge Ma Jeg Utholde",
+      "mainTitle": "Dette Evige\nMorke",
+      "unitDetail": "av dette sjelknusende morket",
+      "targetDateLabel": "Mitt Eneste Hap",
+      "eventTypeLabel": "Profetien",
+      "eventTypeValue": "Lyset Vender Tilbake Til Dette Forlatte Land",
+      "description": "Til det velsignede dagslyset igjen nar min elendige eksistens",
+      "coffeeLink": "Et glimt av hap",
+      "prevLabel": "Morket",
+      "nextLabel": "Frelsen",
+      "solsticeLabel": "Den Lengste Natten"
+    },
+    "summer": {
+      "metaLabel": "Hvor Lenge Kan Jeg Nyte",
+      "mainTitle": "Disse Dyrebare\nGylne Dager",
+      "unitDetail": "av flyktig sommerglede",
+      "targetDateLabel": "Det Uunngaelige",
+      "eventTypeLabel": "Skjebnen",
+      "eventTypeValue": "Nedstigningen I Avgrunnen",
+      "description": "Til morket sluker det som er igjen av min vilje til a leve",
+      "coffeeLink": "Verdsett varmen",
+      "prevLabel": "Lyset",
+      "nextLabel": "Tomrommet",
+      "solsticeLabel": "Midsommer"
+    }
+  },
+
+  "ui": {
+    "seconds": "sekunder",
+    "months": "maneder",
+    "weeks": "uker",
+    "days": "dager",
+    "hours": "timer",
+    "minutes": "minutter",
+    "settings": "Innstillinger",
+    "darkMode": "Mork Modus",
+    "timeFormat": "Tidsformat",
+    "formatSeconds": "Sekunder",
+    "formatFull": "Full",
+    "mood": "Stemning",
+    "moodPlain": "Enkel",
+    "moodEmotional": "Emosjonell",
+    "country": "Land",
+    "autoDetect": "Automatisk",
+    "errorTitle": "Kunne ikke laste DST-informasjon.",
+    "errorAction": "Vennligst last siden pa nytt."
+  },
+
+  "dateFormat": {
+    "locale": "nb-NO",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}

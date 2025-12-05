@@ -1,0 +1,97 @@
+{
+  "locale": "pl",
+  "language": "Polski",
+  "region": "Polska",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Pozostaly Czas Do",
+      "mainTitle": "Polski Czas\nLetni",
+      "unitDetail": "do zmiany czasu",
+      "targetDateLabel": "Data Docelowa",
+      "eventTypeLabel": "Wydarzenie",
+      "eventTypeValue": "Zegary Do Przodu",
+      "description": "Do przestawienia zegarow do przodu (czas letni)",
+      "coffeeLink": "Postaw mi kawe",
+      "prevLabel": "Czas zimowy",
+      "nextLabel": "Czas letni",
+      "solsticeLabel": "Przesilenie"
+    },
+    "summer": {
+      "metaLabel": "Pozostaly Czas Do",
+      "mainTitle": "Polski Czas\nLetni",
+      "unitDetail": "do zmiany czasu",
+      "targetDateLabel": "Data Docelowa",
+      "eventTypeLabel": "Wydarzenie",
+      "eventTypeValue": "Zegary Do Tylu",
+      "description": "Do przestawienia zegarow do tylu (czas zimowy)",
+      "coffeeLink": "Postaw mi kawe",
+      "prevLabel": "Czas letni",
+      "nextLabel": "Czas zimowy",
+      "solsticeLabel": "Przesilenie"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "Jak Dlugo Mam Jeszcze Znosic",
+      "mainTitle": "Te Nedznaa\nPustke Bez Slonca",
+      "unitDetail": "tej duszmiazdzacej ciemnosci",
+      "targetDateLabel": "Moja Jedyna Nadzieja",
+      "eventTypeLabel": "Proroctwo",
+      "eventTypeValue": "Swiatlo Wraca Do Tej Opuszczonej Krainy",
+      "description": "Az blogoslawione swiatlo dzienne ponownie rozjasni moja nedznaa egzystencje",
+      "coffeeLink": "Iskierka nadziei",
+      "prevLabel": "Ciemnosc",
+      "nextLabel": "Zbawienie",
+      "solsticeLabel": "Najdluzsza Noc"
+    },
+    "summer": {
+      "metaLabel": "Jak Dlugo Moge Jeszcze Sie Cieszyc",
+      "mainTitle": "Tymi Drogocennymi\nZlotymi Dniami",
+      "unitDetail": "ulotnego letniego szczescia",
+      "targetDateLabel": "Nieuniknione",
+      "eventTypeLabel": "Przeznaczenie",
+      "eventTypeValue": "Zejscie W Otchlan",
+      "description": "Az ciemnosc pochlon to co pozostalo z mojej woli zycia",
+      "coffeeLink": "Docen cieplo",
+      "prevLabel": "Swiatlo",
+      "nextLabel": "Pustka",
+      "solsticeLabel": "Szczyt Chwaly"
+    }
+  },
+
+  "ui": {
+    "seconds": "sekund",
+    "months": "miesiecy",
+    "weeks": "tygodni",
+    "days": "dni",
+    "hours": "godzin",
+    "minutes": "minut",
+    "settings": "Ustawienia",
+    "darkMode": "Tryb Ciemny",
+    "timeFormat": "Format Czasu",
+    "formatSeconds": "Sekundy",
+    "formatFull": "Pelny",
+    "mood": "Nastroj",
+    "moodPlain": "Prosty",
+    "moodEmotional": "Emocjonalny",
+    "country": "Kraj",
+    "autoDetect": "Automatycznie",
+    "errorTitle": "Nie udalo sie zaladowac informacji DST.",
+    "errorAction": "Odswiez strone."
+  },
+
+  "dateFormat": {
+    "locale": "pl-PL",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}

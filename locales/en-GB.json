@@ -1,0 +1,97 @@
+{
+  "locale": "en-GB",
+  "language": "English",
+  "region": "United Kingdom",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Time Remaining Until",
+      "mainTitle": "UK Daylight\nSaving Time",
+      "unitDetail": "until clocks change",
+      "targetDateLabel": "Target Date",
+      "eventTypeLabel": "Event",
+      "eventTypeValue": "Clocks Forward",
+      "description": "Until clocks go forward (BST begins)",
+      "coffeeLink": "Buy me a coffee",
+      "prevLabel": "GMT",
+      "nextLabel": "BST",
+      "solsticeLabel": "Solstice"
+    },
+    "summer": {
+      "metaLabel": "Time Remaining Until",
+      "mainTitle": "UK Daylight\nSaving Time",
+      "unitDetail": "until clocks change",
+      "targetDateLabel": "Target Date",
+      "eventTypeLabel": "Event",
+      "eventTypeValue": "Clocks Back",
+      "description": "Until clocks go back (GMT begins)",
+      "coffeeLink": "Buy me a coffee",
+      "prevLabel": "BST",
+      "nextLabel": "GMT",
+      "solsticeLabel": "Solstice"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "How Much Longer Must I Endure",
+      "mainTitle": "This Wretched\nSunless Void",
+      "unitDetail": "of this soul-crushing darkness",
+      "targetDateLabel": "My Only Hope",
+      "eventTypeLabel": "The Prophecy",
+      "eventTypeValue": "Light Returns To This Forsaken Land",
+      "description": "Until blessed daylight graces my miserable existence once more",
+      "coffeeLink": "A flicker of hope",
+      "prevLabel": "Darkness",
+      "nextLabel": "Salvation",
+      "solsticeLabel": "The Longest Night"
+    },
+    "summer": {
+      "metaLabel": "How Much Longer Can I Savour",
+      "mainTitle": "These Precious\nGolden Days",
+      "unitDetail": "of fleeting summer bliss",
+      "targetDateLabel": "The Inevitable",
+      "eventTypeLabel": "The Doom",
+      "eventTypeValue": "Descent Into The Abyss",
+      "description": "Until darkness consumes what remains of my will to live",
+      "coffeeLink": "Cherish the warmth",
+      "prevLabel": "The Light",
+      "nextLabel": "The Void",
+      "solsticeLabel": "Peak Glory"
+    }
+  },
+
+  "ui": {
+    "seconds": "seconds",
+    "months": "months",
+    "weeks": "weeks",
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes",
+    "settings": "Settings",
+    "darkMode": "Dark Mode",
+    "timeFormat": "Time Format",
+    "formatSeconds": "Seconds",
+    "formatFull": "Full",
+    "mood": "Mood",
+    "moodPlain": "Plain",
+    "moodEmotional": "Emotional",
+    "country": "Country",
+    "autoDetect": "Auto-detect",
+    "errorTitle": "Failed to load DST information.",
+    "errorAction": "Please refresh the page."
+  },
+
+  "dateFormat": {
+    "locale": "en-GB",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}

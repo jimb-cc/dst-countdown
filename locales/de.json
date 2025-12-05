@@ -1,0 +1,97 @@
+{
+  "locale": "de",
+  "language": "Deutsch",
+  "region": "Deutschland",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Verbleibende Zeit Bis",
+      "mainTitle": "Deutsche\nSommerzeit",
+      "unitDetail": "bis zur Zeitumstellung",
+      "targetDateLabel": "Zieldatum",
+      "eventTypeLabel": "Ereignis",
+      "eventTypeValue": "Uhren Vor",
+      "description": "Bis die Uhren vorgestellt werden (Sommerzeit beginnt)",
+      "coffeeLink": "Kauf mir einen Kaffee",
+      "prevLabel": "Winterzeit",
+      "nextLabel": "Sommerzeit",
+      "solsticeLabel": "Sonnenwende"
+    },
+    "summer": {
+      "metaLabel": "Verbleibende Zeit Bis",
+      "mainTitle": "Deutsche\nSommerzeit",
+      "unitDetail": "bis zur Zeitumstellung",
+      "targetDateLabel": "Zieldatum",
+      "eventTypeLabel": "Ereignis",
+      "eventTypeValue": "Uhren Zuruck",
+      "description": "Bis die Uhren zuruckgestellt werden (Winterzeit beginnt)",
+      "coffeeLink": "Kauf mir einen Kaffee",
+      "prevLabel": "Sommerzeit",
+      "nextLabel": "Winterzeit",
+      "solsticeLabel": "Sonnenwende"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "Wie Lange Muss Ich Noch Ertragen",
+      "mainTitle": "Diese Elende\nSonnenlose Ode",
+      "unitDetail": "dieser seelenzermurbenden Dunkelheit",
+      "targetDateLabel": "Meine Einzige Hoffnung",
+      "eventTypeLabel": "Die Prophezeiung",
+      "eventTypeValue": "Licht Kehrt In Dieses Verlassene Land Zuruck",
+      "description": "Bis das gesegnete Tageslicht meine erbarmliche Existenz wieder erhellt",
+      "coffeeLink": "Ein Funken Hoffnung",
+      "prevLabel": "Dunkelheit",
+      "nextLabel": "Erlosung",
+      "solsticeLabel": "Die Langste Nacht"
+    },
+    "summer": {
+      "metaLabel": "Wie Lange Kann Ich Noch Geniessen",
+      "mainTitle": "Diese Kostbaren\nGoldenen Tage",
+      "unitDetail": "fluchtiger Sommerfreude",
+      "targetDateLabel": "Das Unvermeidliche",
+      "eventTypeLabel": "Das Schicksal",
+      "eventTypeValue": "Abstieg In Den Abgrund",
+      "description": "Bis die Dunkelheit verschlingt, was von meinem Lebenswillen ubrig ist",
+      "coffeeLink": "Genieße die Warme",
+      "prevLabel": "Das Licht",
+      "nextLabel": "Die Leere",
+      "solsticeLabel": "Hochster Glanz"
+    }
+  },
+
+  "ui": {
+    "seconds": "Sekunden",
+    "months": "Monate",
+    "weeks": "Wochen",
+    "days": "Tage",
+    "hours": "Stunden",
+    "minutes": "Minuten",
+    "settings": "Einstellungen",
+    "darkMode": "Dunkelmodus",
+    "timeFormat": "Zeitformat",
+    "formatSeconds": "Sekunden",
+    "formatFull": "Voll",
+    "mood": "Stimmung",
+    "moodPlain": "Schlicht",
+    "moodEmotional": "Emotional",
+    "country": "Land",
+    "autoDetect": "Automatisch",
+    "errorTitle": "DST-Informationen konnten nicht geladen werden.",
+    "errorAction": "Bitte Seite neu laden."
+  },
+
+  "dateFormat": {
+    "locale": "de-DE",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "locale": "fr",
+  "language": "Francais",
+  "region": "France",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Temps Restant Jusqu'a",
+      "mainTitle": "Heure D'ete\nFrancaise",
+      "unitDetail": "avant le changement d'heure",
+      "targetDateLabel": "Date Cible",
+      "eventTypeLabel": "Evenement",
+      "eventTypeValue": "Horloges En Avant",
+      "description": "Jusqu'au passage a l'heure d'ete",
+      "coffeeLink": "Offrez-moi un cafe",
+      "prevLabel": "Heure d'hiver",
+      "nextLabel": "Heure d'ete",
+      "solsticeLabel": "Solstice"
+    },
+    "summer": {
+      "metaLabel": "Temps Restant Jusqu'a",
+      "mainTitle": "Heure D'ete\nFrancaise",
+      "unitDetail": "avant le changement d'heure",
+      "targetDateLabel": "Date Cible",
+      "eventTypeLabel": "Evenement",
+      "eventTypeValue": "Horloges En Arriere",
+      "description": "Jusqu'au passage a l'heure d'hiver",
+      "coffeeLink": "Offrez-moi un cafe",
+      "prevLabel": "Heure d'ete",
+      "nextLabel": "Heure d'hiver",
+      "solsticeLabel": "Solstice"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "Combien De Temps Dois-Je Encore Endurer",
+      "mainTitle": "Ce Miserable\nVide Sans Soleil",
+      "unitDetail": "de cette obscurite ecrasante",
+      "targetDateLabel": "Mon Seul Espoir",
+      "eventTypeLabel": "La Prophetie",
+      "eventTypeValue": "La Lumiere Revient En Cette Terre Abandonnee",
+      "description": "Jusqu'a ce que la lumiere benie eclaire a nouveau ma miserable existence",
+      "coffeeLink": "Une lueur d'espoir",
+      "prevLabel": "L'Obscurite",
+      "nextLabel": "Le Salut",
+      "solsticeLabel": "La Nuit La Plus Longue"
+    },
+    "summer": {
+      "metaLabel": "Combien De Temps Puis-Je Encore Savourer",
+      "mainTitle": "Ces Precieux\nJours Dores",
+      "unitDetail": "de bonheur estival ephemere",
+      "targetDateLabel": "L'Inevitable",
+      "eventTypeLabel": "Le Destin",
+      "eventTypeValue": "Descente Dans L'Abime",
+      "description": "Jusqu'a ce que l'obscurite devore ce qu'il reste de ma volonte de vivre",
+      "coffeeLink": "Cherir la chaleur",
+      "prevLabel": "La Lumiere",
+      "nextLabel": "Le Neant",
+      "solsticeLabel": "Gloire Supreme"
+    }
+  },
+
+  "ui": {
+    "seconds": "secondes",
+    "months": "mois",
+    "weeks": "semaines",
+    "days": "jours",
+    "hours": "heures",
+    "minutes": "minutes",
+    "settings": "Parametres",
+    "darkMode": "Mode Sombre",
+    "timeFormat": "Format de l'heure",
+    "formatSeconds": "Secondes",
+    "formatFull": "Complet",
+    "mood": "Humeur",
+    "moodPlain": "Simple",
+    "moodEmotional": "Emotionnel",
+    "country": "Pays",
+    "autoDetect": "Auto-detection",
+    "errorTitle": "Echec du chargement des informations DST.",
+    "errorAction": "Veuillez rafraichir la page."
+  },
+
+  "dateFormat": {
+    "locale": "fr-FR",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}

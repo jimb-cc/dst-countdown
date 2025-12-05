@@ -1,0 +1,188 @@
+{
+  "countries": {
+    "GB": {
+      "name": "United Kingdom",
+      "nativeName": "United Kingdom",
+      "timezone": "Europe/London",
+      "locale": "en-GB",
+      "hasDST": true,
+      "flag": "🇬🇧",
+      "region": "europe"
+    },
+    "SE": {
+      "name": "Sweden",
+      "nativeName": "Sverige",
+      "timezone": "Europe/Stockholm",
+      "locale": "sv",
+      "hasDST": true,
+      "flag": "🇸🇪",
+      "region": "europe"
+    },
+    "NO": {
+      "name": "Norway",
+      "nativeName": "Norge",
+      "timezone": "Europe/Oslo",
+      "locale": "no",
+      "hasDST": true,
+      "flag": "🇳🇴",
+      "region": "europe"
+    },
+    "FI": {
+      "name": "Finland",
+      "nativeName": "Suomi",
+      "timezone": "Europe/Helsinki",
+      "locale": "fi",
+      "hasDST": true,
+      "flag": "🇫🇮",
+      "region": "europe"
+    },
+    "DE": {
+      "name": "Germany",
+      "nativeName": "Deutschland",
+      "timezone": "Europe/Berlin",
+      "locale": "de",
+      "hasDST": true,
+      "flag": "🇩🇪",
+      "region": "europe"
+    },
+    "NL": {
+      "name": "Netherlands",
+      "nativeName": "Nederland",
+      "timezone": "Europe/Amsterdam",
+      "locale": "nl",
+      "hasDST": true,
+      "flag": "🇳🇱",
+      "region": "europe"
+    },
+    "PL": {
+      "name": "Poland",
+      "nativeName": "Polska",
+      "timezone": "Europe/Warsaw",
+      "locale": "pl",
+      "hasDST": true,
+      "flag": "🇵🇱",
+      "region": "europe"
+    },
+    "FR": {
+      "name": "France",
+      "nativeName": "France",
+      "timezone": "Europe/Paris",
+      "locale": "fr",
+      "hasDST": true,
+      "flag": "🇫🇷",
+      "region": "europe"
+    },
+    "IE": {
+      "name": "Ireland",
+      "nativeName": "Ireland",
+      "timezone": "Europe/Dublin",
+      "locale": "en-IE",
+      "hasDST": true,
+      "flag": "🇮🇪",
+      "region": "europe"
+    },
+    "DK": {
+      "name": "Denmark",
+      "nativeName": "Danmark",
+      "timezone": "Europe/Copenhagen",
+      "locale": "da",
+      "hasDST": true,
+      "flag": "🇩🇰",
+      "region": "europe"
+    },
+    "US": {
+      "name": "United States",
+      "nativeName": "United States",
+      "timezone": "America/New_York",
+      "timezones": [
+        "America/New_York",
+        "America/Chicago",
+        "America/Denver",
+        "America/Los_Angeles"
+      ],
+      "locale": "en-US",
+      "hasDST": true,
+      "flag": "🇺🇸",
+      "region": "northAmerica",
+      "note": "Arizona (except Navajo Nation) and Hawaii do not observe DST"
+    },
+    "CA": {
+      "name": "Canada",
+      "nativeName": "Canada",
+      "timezone": "America/Toronto",
+      "timezones": [
+        "America/Toronto",
+        "America/Vancouver",
+        "America/Edmonton",
+        "America/Winnipeg",
+        "America/Halifax"
+      ],
+      "locale": "en-CA",
+      "hasDST": true,
+      "flag": "🇨🇦",
+      "region": "northAmerica",
+      "note": "Saskatchewan does not observe DST"
+    },
+    "AU": {
+      "name": "Australia",
+      "nativeName": "Australia",
+      "timezone": "Australia/Sydney",
+      "timezones": [
+        "Australia/Sydney",
+        "Australia/Melbourne",
+        "Australia/Brisbane",
+        "Australia/Perth",
+        "Australia/Adelaide"
+      ],
+      "locale": "en-AU",
+      "hasDST": true,
+      "flag": "🇦🇺",
+      "region": "oceania",
+      "note": "Queensland, Northern Territory, and Western Australia do not observe DST",
+      "southernHemisphere": true
+    },
+    "NZ": {
+      "name": "New Zealand",
+      "nativeName": "New Zealand",
+      "timezone": "Pacific/Auckland",
+      "locale": "en-NZ",
+      "hasDST": true,
+      "flag": "🇳🇿",
+      "region": "oceania",
+      "southernHemisphere": true
+    },
+    "CL": {
+      "name": "Chile",
+      "nativeName": "Chile",
+      "timezone": "America/Santiago",
+      "locale": "es-CL",
+      "hasDST": true,
+      "flag": "🇨🇱",
+      "region": "southAmerica",
+      "southernHemisphere": true
+    }
+  },
+  "noDST": [
+    "JP", "CN", "IN", "SG", "HK", "TH", "VN", "PH", "MY", "ID", "KR",
+    "AR", "CO", "VE", "PE", "EC", "RU", "TR", "EG", "ZA", "AE", "SA"
+  ],
+  "regions": {
+    "europe": {
+      "name": "Europe",
+      "order": 1
+    },
+    "northAmerica": {
+      "name": "North America",
+      "order": 2
+    },
+    "oceania": {
+      "name": "Oceania",
+      "order": 3
+    },
+    "southAmerica": {
+      "name": "South America",
+      "order": 4
+    }
+  },
+  "defaultCountry": "GB"
+}

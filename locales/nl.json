@@ -1,0 +1,97 @@
+{
+  "locale": "nl",
+  "language": "Nederlands",
+  "region": "Nederland",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Resterende Tijd Tot",
+      "mainTitle": "Nederlandse\nZomertijd",
+      "unitDetail": "tot de klokken verzet worden",
+      "targetDateLabel": "Doeldatum",
+      "eventTypeLabel": "Gebeurtenis",
+      "eventTypeValue": "Klokken Vooruit",
+      "description": "Tot de klokken vooruit worden gezet (zomertijd begint)",
+      "coffeeLink": "Koop een koffie voor me",
+      "prevLabel": "Wintertijd",
+      "nextLabel": "Zomertijd",
+      "solsticeLabel": "Zonnewende"
+    },
+    "summer": {
+      "metaLabel": "Resterende Tijd Tot",
+      "mainTitle": "Nederlandse\nZomertijd",
+      "unitDetail": "tot de klokken verzet worden",
+      "targetDateLabel": "Doeldatum",
+      "eventTypeLabel": "Gebeurtenis",
+      "eventTypeValue": "Klokken Terug",
+      "description": "Tot de klokken terug worden gezet (wintertijd begint)",
+      "coffeeLink": "Koop een koffie voor me",
+      "prevLabel": "Zomertijd",
+      "nextLabel": "Wintertijd",
+      "solsticeLabel": "Zonnewende"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "Hoe Lang Moet Ik Nog Doorstaan",
+      "mainTitle": "Deze Ellendige\nZonloze Leegte",
+      "unitDetail": "van deze zielverpletterende duisternis",
+      "targetDateLabel": "Mijn Enige Hoop",
+      "eventTypeLabel": "De Profetie",
+      "eventTypeValue": "Licht Keert Terug Naar Dit Verlaten Land",
+      "description": "Tot het gezegende daglicht mijn ellendige bestaan weer verlicht",
+      "coffeeLink": "Een sprankje hoop",
+      "prevLabel": "Duisternis",
+      "nextLabel": "Verlossing",
+      "solsticeLabel": "De Langste Nacht"
+    },
+    "summer": {
+      "metaLabel": "Hoe Lang Kan Ik Nog Genieten Van",
+      "mainTitle": "Deze Kostbare\nGouden Dagen",
+      "unitDetail": "van vluchtig zomergeluk",
+      "targetDateLabel": "Het Onvermijdelijke",
+      "eventTypeLabel": "Het Lot",
+      "eventTypeValue": "Afdaling In De Afgrond",
+      "description": "Tot de duisternis verslindt wat er nog rest van mijn levenswil",
+      "coffeeLink": "Koester de warmte",
+      "prevLabel": "Het Licht",
+      "nextLabel": "De Leegte",
+      "solsticeLabel": "Hoogtepunt"
+    }
+  },
+
+  "ui": {
+    "seconds": "seconden",
+    "months": "maanden",
+    "weeks": "weken",
+    "days": "dagen",
+    "hours": "uren",
+    "minutes": "minuten",
+    "settings": "Instellingen",
+    "darkMode": "Donkere Modus",
+    "timeFormat": "Tijdformaat",
+    "formatSeconds": "Seconden",
+    "formatFull": "Volledig",
+    "mood": "Stemming",
+    "moodPlain": "Eenvoudig",
+    "moodEmotional": "Emotioneel",
+    "country": "Land",
+    "autoDetect": "Automatisch",
+    "errorTitle": "Laden van DST-informatie mislukt.",
+    "errorAction": "Ververs de pagina."
+  },
+
+  "dateFormat": {
+    "locale": "nl-NL",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "locale": "en-NZ",
+  "language": "English",
+  "region": "New Zealand",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Time Remaining Until",
+      "mainTitle": "New Zealand\nDaylight Time",
+      "unitDetail": "until clocks change",
+      "targetDateLabel": "Target Date",
+      "eventTypeLabel": "Event",
+      "eventTypeValue": "Clocks Forward",
+      "description": "Until clocks go forward (NZDT begins)",
+      "coffeeLink": "Buy me a coffee",
+      "prevLabel": "NZST",
+      "nextLabel": "NZDT",
+      "solsticeLabel": "Solstice"
+    },
+    "summer": {
+      "metaLabel": "Time Remaining Until",
+      "mainTitle": "New Zealand\nDaylight Time",
+      "unitDetail": "until clocks change",
+      "targetDateLabel": "Target Date",
+      "eventTypeLabel": "Event",
+      "eventTypeValue": "Clocks Back",
+      "description": "Until clocks go back (NZST begins)",
+      "coffeeLink": "Buy me a coffee",
+      "prevLabel": "NZDT",
+      "nextLabel": "NZST",
+      "solsticeLabel": "Solstice"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "How Much Longer Must I Endure",
+      "mainTitle": "These Dark\nKiwi Nights",
+      "unitDetail": "of early sunsets",
+      "targetDateLabel": "My Only Hope",
+      "eventTypeLabel": "The Prophecy",
+      "eventTypeValue": "Long Evenings Return To Aotearoa",
+      "description": "Until the glorious summer light blesses us once more",
+      "coffeeLink": "A flicker of hope",
+      "prevLabel": "Short Days",
+      "nextLabel": "Long Days",
+      "solsticeLabel": "Matariki Eve"
+    },
+    "summer": {
+      "metaLabel": "How Much Longer Can I Savour",
+      "mainTitle": "These Endless\nSummer Evenings",
+      "unitDetail": "of Kiwi summer bliss",
+      "targetDateLabel": "The Inevitable",
+      "eventTypeLabel": "The Doom",
+      "eventTypeValue": "Winter Approaches",
+      "description": "Until the darkness creeps back into our lives",
+      "coffeeLink": "Cherish the warmth",
+      "prevLabel": "The Glory",
+      "nextLabel": "The Gloom",
+      "solsticeLabel": "Peak Summer"
+    }
+  },
+
+  "ui": {
+    "seconds": "seconds",
+    "months": "months",
+    "weeks": "weeks",
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes",
+    "settings": "Settings",
+    "darkMode": "Dark Mode",
+    "timeFormat": "Time Format",
+    "formatSeconds": "Seconds",
+    "formatFull": "Full",
+    "mood": "Mood",
+    "moodPlain": "Plain",
+    "moodEmotional": "Emotional",
+    "country": "Country",
+    "autoDetect": "Auto-detect",
+    "errorTitle": "Failed to load DST information.",
+    "errorAction": "Please refresh the page."
+  },
+
+  "dateFormat": {
+    "locale": "en-NZ",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}

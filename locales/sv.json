@@ -1,0 +1,97 @@
+{
+  "locale": "sv",
+  "language": "Svenska",
+  "region": "Sverige",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Tid Kvar Till",
+      "mainTitle": "Svensk\nSommartid",
+      "unitDetail": "tills klockorna stalls om",
+      "targetDateLabel": "Datum",
+      "eventTypeLabel": "Handelse",
+      "eventTypeValue": "Klockorna Fram",
+      "description": "Tills klockorna stalls fram (sommartid borjar)",
+      "coffeeLink": "Bjud mig pa kaffe",
+      "prevLabel": "Vintertid",
+      "nextLabel": "Sommartid",
+      "solsticeLabel": "Solstand"
+    },
+    "summer": {
+      "metaLabel": "Tid Kvar Till",
+      "mainTitle": "Svensk\nSommartid",
+      "unitDetail": "tills klockorna stalls om",
+      "targetDateLabel": "Datum",
+      "eventTypeLabel": "Handelse",
+      "eventTypeValue": "Klockorna Tillbaka",
+      "description": "Tills klockorna stalls tillbaka (vintertid borjar)",
+      "coffeeLink": "Bjud mig pa kaffe",
+      "prevLabel": "Sommartid",
+      "nextLabel": "Vintertid",
+      "solsticeLabel": "Solstand"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "Hur Lange Maste Jag Utstaa",
+      "mainTitle": "Detta Evinnerliga\nMorker",
+      "unitDetail": "av detta sjalkrossande morker",
+      "targetDateLabel": "Mitt Enda Hopp",
+      "eventTypeLabel": "Profetian",
+      "eventTypeValue": "Ljuset Aterkomst Till Norden",
+      "description": "Tills det valsignade ljuset aterigen naermar sig mitt elaende",
+      "coffeeLink": "En gnista av hopp",
+      "prevLabel": "Morkret",
+      "nextLabel": "Fralsningen",
+      "solsticeLabel": "Den Langsta Natten"
+    },
+    "summer": {
+      "metaLabel": "Hur Lange Kan Jag Njuta Av",
+      "mainTitle": "Dessa Dyrbara\nLjusa Dagar",
+      "unitDetail": "av flyktigt sommarljus",
+      "targetDateLabel": "Det Oundvikliga",
+      "eventTypeLabel": "Undergangen",
+      "eventTypeValue": "Nedstigningen I Morkret",
+      "description": "Tills morkret slukar det som aterstar av min vilja att leva",
+      "coffeeLink": "Vardesatt varmen",
+      "prevLabel": "Ljuset",
+      "nextLabel": "Tomrummet",
+      "solsticeLabel": "Midsommar"
+    }
+  },
+
+  "ui": {
+    "seconds": "sekunder",
+    "months": "manader",
+    "weeks": "veckor",
+    "days": "dagar",
+    "hours": "timmar",
+    "minutes": "minuter",
+    "settings": "Installningar",
+    "darkMode": "Morkt Lage",
+    "timeFormat": "Tidsformat",
+    "formatSeconds": "Sekunder",
+    "formatFull": "Hela",
+    "mood": "Stämning",
+    "moodPlain": "Enkel",
+    "moodEmotional": "Kanslomassig",
+    "country": "Land",
+    "autoDetect": "Automatisk",
+    "errorTitle": "Kunde inte ladda DST-information.",
+    "errorAction": "Ladda om sidan."
+  },
+
+  "dateFormat": {
+    "locale": "sv-SE",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}

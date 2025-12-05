@@ -1,0 +1,97 @@
+{
+  "locale": "fi",
+  "language": "Suomi",
+  "region": "Suomi",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Aikaa Jaljella",
+      "mainTitle": "Suomen\nKesaaika",
+      "unitDetail": "kellon siirtoon",
+      "targetDateLabel": "Kohdepaiva",
+      "eventTypeLabel": "Tapahtuma",
+      "eventTypeValue": "Kellot Eteenpain",
+      "description": "Kellon siirtoon eteenpain (kesaaika alkaa)",
+      "coffeeLink": "Tarjoa kahvi",
+      "prevLabel": "Talviaika",
+      "nextLabel": "Kesaaika",
+      "solsticeLabel": "Paivanseis"
+    },
+    "summer": {
+      "metaLabel": "Aikaa Jaljella",
+      "mainTitle": "Suomen\nKesaaika",
+      "unitDetail": "kellon siirtoon",
+      "targetDateLabel": "Kohdepaiva",
+      "eventTypeLabel": "Tapahtuma",
+      "eventTypeValue": "Kellot Taaksepain",
+      "description": "Kellon siirtoon taaksepain (talviaika alkaa)",
+      "coffeeLink": "Tarjoa kahvi",
+      "prevLabel": "Kesaaika",
+      "nextLabel": "Talviaika",
+      "solsticeLabel": "Paivanseis"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "Kuinka Kauan Minun On Viela Kestettava",
+      "mainTitle": "Tata Surkeaa\nPimeaa Tyhjyytta",
+      "unitDetail": "tata sielua murskaavaa pimeytta",
+      "targetDateLabel": "Ainoa Toivoni",
+      "eventTypeLabel": "Ennustus",
+      "eventTypeValue": "Valo Palaa Tahan Hylattyyn Maahan",
+      "description": "Kunnes siunattu paivanlvalo taas loistaa kurjaan olemassaolooni",
+      "coffeeLink": "Toivon kipina",
+      "prevLabel": "Pimeys",
+      "nextLabel": "Pelastus",
+      "solsticeLabel": "Pisin Yo"
+    },
+    "summer": {
+      "metaLabel": "Kuinka Kauan Voin Viela Nauttia",
+      "mainTitle": "Naista Kalliista\nKultaisista Paivista",
+      "unitDetail": "ohikiitavaa kesaonnea",
+      "targetDateLabel": "Vaistamaton",
+      "eventTypeLabel": "Tuomio",
+      "eventTypeValue": "Laskeutuminen Pimeyteen",
+      "description": "Kunnes pimeys nielee sen mita elaman halustani on jaljella",
+      "coffeeLink": "Vaaliskaa lampoa",
+      "prevLabel": "Valo",
+      "nextLabel": "Tyhjyys",
+      "solsticeLabel": "Juhannus"
+    }
+  },
+
+  "ui": {
+    "seconds": "sekuntia",
+    "months": "kuukautta",
+    "weeks": "viikkoa",
+    "days": "paivaa",
+    "hours": "tuntia",
+    "minutes": "minuuttia",
+    "settings": "Asetukset",
+    "darkMode": "Tumma Tila",
+    "timeFormat": "Aikamuoto",
+    "formatSeconds": "Sekunnit",
+    "formatFull": "Taysi",
+    "mood": "Tunnelma",
+    "moodPlain": "Yksinkertainen",
+    "moodEmotional": "Tunteellinen",
+    "country": "Maa",
+    "autoDetect": "Automaattinen",
+    "errorTitle": "DST-tietojen lataus epaonnistui.",
+    "errorAction": "Paivita sivu."
+  },
+
+  "dateFormat": {
+    "locale": "fi-FI",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}

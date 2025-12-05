@@ -1,5 +1,7 @@
 // API Configuration
 const API_ENDPOINT = '/api/dst';
+const COUNTRIES_ENDPOINT = '/data/countries.json';
+const LOCALES_PATH = '/locales';
 
 // DOM Elements
 const countdownElement = document.getElementById('countdown');
@@ -30,6 +32,7 @@ const settingsOverlay = document.getElementById('settingsOverlay');
 const darkModeToggle = document.getElementById('darkModeToggle');
 const formatButtons = document.querySelectorAll('.format-btn');
 const moodButtons = document.querySelectorAll('.mood-btn');
+const countrySelect = document.getElementById('countrySelect');
 
 // Mood text elements
 const metaLabelElement = document.getElementById('metaLabel');
@@ -49,85 +52,220 @@ let countdownInterval = null;
 let timeFormat = localStorage.getItem('timeFormat') || 'seconds';
 let darkMode = localStorage.getItem('darkMode') === 'true'; // Default to false (light mode)
 let mood = localStorage.getItem('mood') || 'plain';
+let selectedCountry = localStorage.getItem('country') || 'auto';
+let countriesData = null;
+let detectedCountry = null;
+let currentLocale = null;
+let currentLocaleCode = 'en-GB';
 
-// Emotional copy - changes based on whether we're in winter (longing for light) or summer (dreading darkness)
-const emotionalCopyWinter = {
-    metaLabel: 'How Much Longer Must I Endure',
-    mainTitle: 'This Wretched<br>Sunless Void',
-    unitDetail: 'of this soul-crushing darkness',
-    targetDateLabel: 'My Only Hope',
-    eventTypeLabel: 'The Prophecy',
-    eventTypeValue: 'Light Returns To This Forsaken Land',
-    description: 'Until blessed daylight graces my miserable existence once more',
-    coffeeLink: '🕯️ A flicker of hope',
-    prevLabel: 'Darkness',
-    nextLabel: 'Salvation',
-    solsticeLabel: 'The Longest Night'
+// Fallback copy (embedded en-GB) - used if locale file fails to load
+const fallbackLocale = {
+    plain: {
+        winter: {
+            metaLabel: 'Time Remaining Until',
+            mainTitle: 'UK Daylight\nSaving Time',
+            unitDetail: 'until clocks change',
+            targetDateLabel: 'Target Date',
+            eventTypeLabel: 'Event',
+            eventTypeValue: 'Clocks Forward',
+            description: 'Until clocks go forward (BST begins)',
+            coffeeLink: 'Buy me a coffee',
+            prevLabel: 'GMT',
+            nextLabel: 'BST',
+            solsticeLabel: 'Solstice'
+        },
+        summer: {
+            metaLabel: 'Time Remaining Until',
+            mainTitle: 'UK Daylight\nSaving Time',
+            unitDetail: 'until clocks change',
+            targetDateLabel: 'Target Date',
+            eventTypeLabel: 'Event',
+            eventTypeValue: 'Clocks Back',
+            description: 'Until clocks go back (GMT begins)',
+            coffeeLink: 'Buy me a coffee',
+            prevLabel: 'BST',
+            nextLabel: 'GMT',
+            solsticeLabel: 'Solstice'
+        }
+    },
+    emotional: {
+        winter: {
+            metaLabel: 'How Much Longer Must I Endure',
+            mainTitle: 'This Wretched\nSunless Void',
+            unitDetail: 'of this soul-crushing darkness',
+            targetDateLabel: 'My Only Hope',
+            eventTypeLabel: 'The Prophecy',
+            eventTypeValue: 'Light Returns To This Forsaken Land',
+            description: 'Until blessed daylight graces my miserable existence once more',
+            coffeeLink: 'A flicker of hope',
+            prevLabel: 'Darkness',
+            nextLabel: 'Salvation',
+            solsticeLabel: 'The Longest Night'
+        },
+        summer: {
+            metaLabel: 'How Much Longer Can I Savour',
+            mainTitle: 'These Precious\nGolden Days',
+            unitDetail: 'of fleeting summer bliss',
+            targetDateLabel: 'The Inevitable',
+            eventTypeLabel: 'The Doom',
+            eventTypeValue: 'Descent Into The Abyss',
+            description: 'Until darkness consumes what remains of my will to live',
+            coffeeLink: 'Cherish the warmth',
+            prevLabel: 'The Light',
+            nextLabel: 'The Void',
+            solsticeLabel: 'Peak Glory'
+        }
+    },
+    ui: {
+        seconds: 'seconds'
+    },
+    dateFormat: {
+        locale: 'en-GB'
+    }
 };
 
-const emotionalCopySummer = {
-    metaLabel: 'How Much Longer Can I Savour',
-    mainTitle: 'These Precious<br>Golden Days',
-    unitDetail: 'of fleeting summer bliss',
-    targetDateLabel: 'The Inevitable',
-    eventTypeLabel: 'The Doom',
-    eventTypeValue: 'Descent Into The Abyss',
-    description: 'Until darkness consumes what remains of my will to live',
-    coffeeLink: '☀️ Cherish the warmth',
-    prevLabel: 'The Light',
-    nextLabel: 'The Void',
-    solsticeLabel: 'Peak Glory'
-};
+// Load locale file for a given locale code
+async function loadLocale(localeCode) {
+    try {
+        const response = await fetch(`${LOCALES_PATH}/${localeCode}.json`);
+        if (!response.ok) {
+            console.warn(`Locale ${localeCode} not found, falling back to en-GB`);
+            return null;
+        }
+        return await response.json();
+    } catch (error) {
+        console.warn(`Failed to load locale ${localeCode}:`, error);
+        return null;
+    }
+}
 
-const plainCopyWinter = {
-    metaLabel: 'Time Remaining Until',
-    mainTitle: 'UK Daylight<br>Saving Time',
-    unitDetail: 'until clocks change',
-    targetDateLabel: 'Target Date',
-    eventTypeLabel: 'Event',
-    eventTypeValue: 'Clocks Forward',
-    description: 'Until clocks go forward (BST begins)',
-    coffeeLink: '☕ Buy me a coffee',
-    prevLabel: 'GMT',
-    nextLabel: 'BST',
-    solsticeLabel: 'Solstice'
-};
-
-const plainCopySummer = {
-    metaLabel: 'Time Remaining Until',
-    mainTitle: 'UK Daylight<br>Saving Time',
-    unitDetail: 'until clocks change',
-    targetDateLabel: 'Target Date',
-    eventTypeLabel: 'Event',
-    eventTypeValue: 'Clocks Back',
-    description: 'Until clocks go back (GMT begins)',
-    coffeeLink: '☕ Buy me a coffee',
-    prevLabel: 'BST',
-    nextLabel: 'GMT',
-    solsticeLabel: 'Solstice'
-};
+// Get the locale code for a country
+function getLocaleForCountry(countryCode) {
+    if (countriesData && countriesData.countries[countryCode]) {
+        return countriesData.countries[countryCode].locale || 'en-GB';
+    }
+    return 'en-GB';
+}
 
 // Helper to get the right copy based on mood and season
 function getCopy() {
+    const locale = currentLocale || fallbackLocale;
     const isWinter = eventData && eventData.type === 'forward';
-    if (mood === 'emotional') {
-        return isWinter ? emotionalCopyWinter : emotionalCopySummer;
-    }
-    return isWinter ? plainCopyWinter : plainCopySummer;
+    const season = isWinter ? 'winter' : 'summer';
+
+    // Get copy from locale, with fallback chain
+    const moodCopy = locale[mood] || locale.plain || fallbackLocale.plain;
+    return moodCopy[season] || fallbackLocale.plain[season];
+}
+
+// Get UI string from locale
+function getUIString(key) {
+    const locale = currentLocale || fallbackLocale;
+    return (locale.ui && locale.ui[key]) || (fallbackLocale.ui && fallbackLocale.ui[key]) || key;
 }
 
 // Initialize
 async function init() {
     try {
+        // Load countries data first
+        await loadCountriesData();
+
         // Apply saved settings
         applySettings();
 
+        // Fetch DST data first (this sets detectedCountry for 'auto' mode)
         await fetchDSTData();
+
+        // Now update locale with correct country info (handles 'auto' detection)
+        await updateLocale();
+
         startCountdown();
         initSettings();
     } catch (error) {
+        console.error('Init error:', error);
         showError();
     }
+}
+
+// Update locale based on current country
+async function updateLocale() {
+    // Determine which country we're actually showing data for
+    const activeCountry = selectedCountry === 'auto'
+        ? (detectedCountry || 'GB')
+        : selectedCountry;
+
+    const localeCode = getLocaleForCountry(activeCountry);
+
+    // Load locale if changed OR if we haven't loaded any locale yet
+    if (localeCode !== currentLocaleCode || !currentLocale) {
+        currentLocaleCode = localeCode;
+        currentLocale = await loadLocale(localeCode);
+
+        // If locale failed to load, try en-GB as fallback
+        if (!currentLocale && localeCode !== 'en-GB') {
+            currentLocaleCode = 'en-GB';
+            currentLocale = await loadLocale('en-GB');
+        }
+    }
+
+    // Re-format date with new locale
+    if (eventData && eventData.targetDate) {
+        targetDateElement.textContent = formatDate(new Date(eventData.targetDate));
+    }
+
+    // Re-apply mood with new locale
+    applyMood();
+}
+
+// Load countries data and populate selector
+async function loadCountriesData() {
+    const response = await fetch(COUNTRIES_ENDPOINT);
+    if (!response.ok) {
+        throw new Error('Failed to load countries data');
+    }
+    countriesData = await response.json();
+    populateCountrySelector();
+}
+
+// Populate country selector dropdown
+function populateCountrySelector() {
+    // Clear existing options except auto
+    while (countrySelect.options.length > 1) {
+        countrySelect.remove(1);
+    }
+
+    // Group countries by region
+    const regions = countriesData.regions;
+    const countries = countriesData.countries;
+
+    // Sort regions by order
+    const sortedRegions = Object.entries(regions)
+        .sort((a, b) => a[1].order - b[1].order)
+        .map(([key]) => key);
+
+    // Add countries grouped by region
+    for (const regionKey of sortedRegions) {
+        const regionCountries = Object.entries(countries)
+            .filter(([, info]) => info.region === regionKey)
+            .sort((a, b) => a[1].name.localeCompare(b[1].name));
+
+        if (regionCountries.length > 0) {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = regions[regionKey].name;
+
+            for (const [code, info] of regionCountries) {
+                const option = document.createElement('option');
+                option.value = code;
+                option.textContent = `${info.flag} ${info.name}`;
+                optgroup.appendChild(option);
+            }
+
+            countrySelect.appendChild(optgroup);
+        }
+    }
+
+    // Set the current value
+    countrySelect.value = selectedCountry;
 }
 
 // Apply saved settings on load
@@ -160,7 +298,7 @@ function updateTimeFormatDisplay() {
     if (timeFormat === 'seconds') {
         countdownElement.classList.remove('hidden');
         countdownFullElement.classList.remove('active');
-        unitLabelElement.textContent = 'seconds';
+        unitLabelElement.textContent = getUIString('seconds');
     } else {
         countdownElement.classList.add('hidden');
         countdownFullElement.classList.add('active');
@@ -191,7 +329,8 @@ function applyMood() {
 
 // Set title content with line break (safe - hardcoded values only)
 function setTitleContent(titleText) {
-    const parts = titleText.split('<br>');
+    // Support both \n (from JSON) and <br> (legacy) as line breaks
+    const parts = titleText.split(/\n|<br>/);
     mainTitleElement.textContent = '';
     parts.forEach((part, index) => {
         mainTitleElement.appendChild(document.createTextNode(part));
@@ -279,34 +418,69 @@ function initSettings() {
             applyMood();
         });
     });
+
+    // Country selector
+    countrySelect.addEventListener('change', async () => {
+        const newCountry = countrySelect.value;
+        if (newCountry !== selectedCountry) {
+            selectedCountry = newCountry;
+            localStorage.setItem('country', selectedCountry);
+
+            // Stop current countdown and fetch new data
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+
+            try {
+                await updateLocale(); // Load locale for new country FIRST
+                await fetchDSTData(true); // Then fetch DST data (formats date with correct locale)
+                startCountdown();
+            } catch (error) {
+                console.error('Failed to fetch DST data for new country:', error);
+                showError();
+            }
+        }
+    });
 }
 
 // Fetch DST data from server (with localStorage caching)
-async function fetchDSTData() {
+async function fetchDSTData(forceRefresh = false) {
     const CACHE_DURATION = 3600000; // 1 hour in milliseconds
+    const cacheKey = `dstData_${selectedCountry}`;
+    const cacheTimeKey = `dstDataTime_${selectedCountry}`;
 
-    // Check localStorage cache first
-    const cached = localStorage.getItem('dstData');
-    const cacheTime = localStorage.getItem('dstDataTime');
+    // Check localStorage cache first (unless force refresh)
+    if (!forceRefresh) {
+        const cached = localStorage.getItem(cacheKey);
+        const cacheTime = localStorage.getItem(cacheTimeKey);
 
-    if (cached && cacheTime) {
-        const age = Date.now() - parseInt(cacheTime, 10);
-        if (age < CACHE_DURATION) {
-            // Use cached data
-            eventData = JSON.parse(cached);
-            targetTimestamp = eventData.timestamp;
-            previousTimestamp = eventData.previousEvent ? eventData.previousEvent.timestamp : null;
-            targetDateElement.textContent = formatDate(new Date(eventData.targetDate));
-            updateEventText();
-            if (eventData.progressPercent !== undefined) {
-                progressBarElement.style.width = `${eventData.progressPercent}%`;
+        if (cached && cacheTime) {
+            const age = Date.now() - parseInt(cacheTime, 10);
+            if (age < CACHE_DURATION) {
+                // Use cached data
+                eventData = JSON.parse(cached);
+                targetTimestamp = eventData.timestamp;
+                previousTimestamp = eventData.previousEvent ? eventData.previousEvent.timestamp : null;
+                detectedCountry = eventData.detectedCountry;
+                updateCountryDisplay();
+                targetDateElement.textContent = formatDate(new Date(eventData.targetDate));
+                updateEventText();
+                if (eventData.progressPercent !== undefined) {
+                    progressBarElement.style.width = `${eventData.progressPercent}%`;
+                }
+                return;
             }
-            return;
         }
     }
 
+    // Build API URL with country param
+    let apiUrl = API_ENDPOINT;
+    if (selectedCountry !== 'auto') {
+        apiUrl += `?country=${selectedCountry}`;
+    }
+
     // Fetch fresh data from API
-    const response = await fetch(API_ENDPOINT);
+    const response = await fetch(apiUrl);
 
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -314,9 +488,13 @@ async function fetchDSTData() {
 
     eventData = await response.json();
 
+    // Store detected country from API response
+    detectedCountry = eventData.detectedCountry;
+    updateCountryDisplay();
+
     // Cache the response
-    localStorage.setItem('dstData', JSON.stringify(eventData));
-    localStorage.setItem('dstDataTime', Date.now().toString());
+    localStorage.setItem(cacheKey, JSON.stringify(eventData));
+    localStorage.setItem(cacheTimeKey, Date.now().toString());
 
     targetTimestamp = eventData.timestamp;
     previousTimestamp = eventData.previousEvent ? eventData.previousEvent.timestamp : null;
@@ -334,6 +512,19 @@ async function fetchDSTData() {
 
     // Update solstice marker
     updateSolsticeMarker();
+}
+
+// Update country display in the selector
+function updateCountryDisplay() {
+    // Update the auto-detect option to show detected country
+    const autoOption = countrySelect.querySelector('option[value="auto"]');
+    if (autoOption && detectedCountry && countriesData && countriesData.countries[detectedCountry]) {
+        const countryInfo = countriesData.countries[detectedCountry];
+        autoOption.textContent = `Auto-detect (${countryInfo.flag} ${countryInfo.name})`;
+    } else if (autoOption && detectedCountry) {
+        // Country detected but not in our list
+        autoOption.textContent = `Auto-detect (${detectedCountry})`;
+    }
 }
 
 // Start countdown timer
@@ -356,8 +547,10 @@ function updateCountdown() {
         countdownElement.textContent = '0.00';
         progressBarElement.style.width = '100%';
         // Clear cached data so we fetch fresh
-        localStorage.removeItem('dstData');
-        localStorage.removeItem('dstDataTime');
+        const cacheKey = `dstData_${selectedCountry}`;
+        const cacheTimeKey = `dstDataTime_${selectedCountry}`;
+        localStorage.removeItem(cacheKey);
+        localStorage.removeItem(cacheTimeKey);
         setTimeout(() => {
             init(); // Reload to get next event
         }, 5000);
@@ -468,7 +661,10 @@ function updateFullDisplay(milliseconds) {
 
 // Format date for display
 function formatDate(date) {
-    const options = {
+    const locale = currentLocale || fallbackLocale;
+    const dateFormat = locale.dateFormat || fallbackLocale.dateFormat;
+
+    const options = dateFormat.options || {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
@@ -477,7 +673,8 @@ function formatDate(date) {
         minute: '2-digit',
         timeZoneName: 'short'
     };
-    return date.toLocaleString('en-GB', options);
+
+    return date.toLocaleString(dateFormat.locale || 'en-GB', options);
 }
 
 // Show error state

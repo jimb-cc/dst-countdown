@@ -672,6 +672,63 @@ footer {
     border-color: var(--color-black);
 }
 
+/* Country Selector */
+.country-selector {
+    position: relative;
+}
+
+.country-selector select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-gray-light);
+    color: var(--color-black);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 140px;
+    max-width: 180px;
+}
+
+.country-selector select:hover {
+    border-color: var(--color-black);
+}
+
+.country-selector select:focus {
+    outline: none;
+    border-color: var(--color-black);
+}
+
+.country-selector::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid var(--color-gray-mid);
+    pointer-events: none;
+}
+
+.country-selector select option {
+    padding: var(--space-1);
+}
+
+.country-selector select optgroup {
+    font-weight: 700;
+    color: var(--color-gray-mid);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
 /* ==========================================
    Dark Mode Theme
    ========================================== */
@@ -706,6 +763,10 @@ footer {
 
 [data-theme="dark"] .footer-text a:hover {
     color: var(--color-black);
+}
+
+[data-theme="dark"] .country-selector select {
+    background-color: #0a0a0a;
 }
 
 /* ==========================================

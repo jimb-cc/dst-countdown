@@ -1,0 +1,97 @@
+{
+  "locale": "es-CL",
+  "language": "Espanol",
+  "region": "Chile",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Tiempo Restante Hasta",
+      "mainTitle": "Horario de\nVerano Chileno",
+      "unitDetail": "hasta el cambio de hora",
+      "targetDateLabel": "Fecha Objetivo",
+      "eventTypeLabel": "Evento",
+      "eventTypeValue": "Relojes Adelante",
+      "description": "Hasta que los relojes se adelanten (horario de verano)",
+      "coffeeLink": "Invitame un cafe",
+      "prevLabel": "Invierno",
+      "nextLabel": "Verano",
+      "solsticeLabel": "Solsticio"
+    },
+    "summer": {
+      "metaLabel": "Tiempo Restante Hasta",
+      "mainTitle": "Horario de\nVerano Chileno",
+      "unitDetail": "hasta el cambio de hora",
+      "targetDateLabel": "Fecha Objetivo",
+      "eventTypeLabel": "Evento",
+      "eventTypeValue": "Relojes Atras",
+      "description": "Hasta que los relojes se atrasen (horario de invierno)",
+      "coffeeLink": "Invitame un cafe",
+      "prevLabel": "Verano",
+      "nextLabel": "Invierno",
+      "solsticeLabel": "Solsticio"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "Cuanto Tiempo Mas Debo Soportar",
+      "mainTitle": "Este Miserable\nVacio Sin Sol",
+      "unitDetail": "de esta oscuridad aplastante",
+      "targetDateLabel": "Mi Unica Esperanza",
+      "eventTypeLabel": "La Profecia",
+      "eventTypeValue": "La Luz Regresa A Esta Tierra Olvidada",
+      "description": "Hasta que la bendita luz del dia ilumine mi miserable existencia",
+      "coffeeLink": "Un destello de esperanza",
+      "prevLabel": "Oscuridad",
+      "nextLabel": "Salvacion",
+      "solsticeLabel": "La Noche Mas Larga"
+    },
+    "summer": {
+      "metaLabel": "Cuanto Tiempo Mas Puedo Disfrutar",
+      "mainTitle": "Estos Preciados\nDias Dorados",
+      "unitDetail": "de fugaz felicidad veraniega",
+      "targetDateLabel": "Lo Inevitable",
+      "eventTypeLabel": "El Destino",
+      "eventTypeValue": "Descenso Al Abismo",
+      "description": "Hasta que la oscuridad consuma lo que queda de mi voluntad de vivir",
+      "coffeeLink": "Atesora el calor",
+      "prevLabel": "La Luz",
+      "nextLabel": "El Vacio",
+      "solsticeLabel": "Maxima Gloria"
+    }
+  },
+
+  "ui": {
+    "seconds": "segundos",
+    "months": "meses",
+    "weeks": "semanas",
+    "days": "dias",
+    "hours": "horas",
+    "minutes": "minutos",
+    "settings": "Configuracion",
+    "darkMode": "Modo Oscuro",
+    "timeFormat": "Formato de Hora",
+    "formatSeconds": "Segundos",
+    "formatFull": "Completo",
+    "mood": "Estado",
+    "moodPlain": "Simple",
+    "moodEmotional": "Emocional",
+    "country": "Pais",
+    "autoDetect": "Auto-detectar",
+    "errorTitle": "Error al cargar informacion DST.",
+    "errorAction": "Por favor recarga la pagina."
+  },
+
+  "dateFormat": {
+    "locale": "es-CL",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "locale": "da",
+  "language": "Dansk",
+  "region": "Danmark",
+
+  "plain": {
+    "winter": {
+      "metaLabel": "Tid Tilbage Til",
+      "mainTitle": "Dansk\nSommertid",
+      "unitDetail": "til urene stilles om",
+      "targetDateLabel": "Maldato",
+      "eventTypeLabel": "Begivenhed",
+      "eventTypeValue": "Urene Frem",
+      "description": "Til urene stilles frem (sommertid begynder)",
+      "coffeeLink": "Kob mig en kaffe",
+      "prevLabel": "Vintertid",
+      "nextLabel": "Sommertid",
+      "solsticeLabel": "Solhverv"
+    },
+    "summer": {
+      "metaLabel": "Tid Tilbage Til",
+      "mainTitle": "Dansk\nSommertid",
+      "unitDetail": "til urene stilles om",
+      "targetDateLabel": "Maldato",
+      "eventTypeLabel": "Begivenhed",
+      "eventTypeValue": "Urene Tilbage",
+      "description": "Til urene stilles tilbage (vintertid begynder)",
+      "coffeeLink": "Kob mig en kaffe",
+      "prevLabel": "Sommertid",
+      "nextLabel": "Vintertid",
+      "solsticeLabel": "Solhverv"
+    }
+  },
+
+  "emotional": {
+    "winter": {
+      "metaLabel": "Hvor Lange Skal Jeg Udholde",
+      "mainTitle": "Dette Elendige\nSollose Tomrum",
+      "unitDetail": "af dette sjaelknusende morke",
+      "targetDateLabel": "Mit Eneste Hab",
+      "eventTypeLabel": "Profetien",
+      "eventTypeValue": "Lyset Vender Tilbage Til Dette Forladte Land",
+      "description": "Til det velsignede dagslys igen naer min elendige eksistens",
+      "coffeeLink": "Et glimt af hab",
+      "prevLabel": "Morket",
+      "nextLabel": "Frelsen",
+      "solsticeLabel": "Den Laengste Nat"
+    },
+    "summer": {
+      "metaLabel": "Hvor Laenge Kan Jeg Nyde",
+      "mainTitle": "Disse Dyrebare\nGyldne Dage",
+      "unitDetail": "af flygtigt sommerglede",
+      "targetDateLabel": "Det Uundgaelige",
+      "eventTypeLabel": "Skaebnen",
+      "eventTypeValue": "Nedstigningen I Afgrunden",
+      "description": "Til morket opsluger hvad der er tilbage af min vilje til at leve",
+      "coffeeLink": "Vaerdsat varmen",
+      "prevLabel": "Lyset",
+      "nextLabel": "Tomheden",
+      "solsticeLabel": "Midsommer"
+    }
+  },
+
+  "ui": {
+    "seconds": "sekunder",
+    "months": "maneder",
+    "weeks": "uger",
+    "days": "dage",
+    "hours": "timer",
+    "minutes": "minutter",
+    "settings": "Indstillinger",
+    "darkMode": "Mork Tilstand",
+    "timeFormat": "Tidsformat",
+    "formatSeconds": "Sekunder",
+    "formatFull": "Fuld",
+    "mood": "Stemning",
+    "moodPlain": "Enkel",
+    "moodEmotional": "Folemsomh",
+    "country": "Land",
+    "autoDetect": "Automatisk",
+    "errorTitle": "Kunne ikke indlaese DST-oplysninger.",
+    "errorAction": "Genindlaes siden."
+  },
+
+  "dateFormat": {
+    "locale": "da-DK",
+    "options": {
+      "weekday": "long",
+      "year": "numeric",
+      "month": "long",
+      "day": "numeric",
+      "hour": "2-digit",
+      "minute": "2-digit",
+      "timeZoneName": "short"
+    }
+  }
+}
