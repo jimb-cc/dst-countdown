@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-UK Daylight Saving Time Countdown - a minimalist web application displaying a real-time countdown in milliseconds to the next UK DST change. Built with Swiss International Typographic Style design principles.
+International Daylight Saving Time Countdown - a minimalist web application displaying a real-time countdown to the next DST change. Supports 15 countries with auto-detection via Vercel geolocation. Built with Swiss International Typographic Style design principles.
 
-**Tech Stack**: Node.js + Express backend, vanilla HTML/CSS/JavaScript frontend, no build step required.
+**Tech Stack**: Node.js + Express backend, vanilla HTML/CSS/JavaScript frontend, Luxon for timezone calculations, no build step required.
 
 ## Commands
 
@@ -15,13 +15,11 @@ UK Daylight Saving Time Countdown - a minimalist web application displaying a re
 npm install
 
 # Run local development server (port 3000)
-npm start
+npm run dev
 
 # Test the API endpoint
 curl http://localhost:3000/api/dst
-
-# Change port
-PORT=8080 npm start
+curl http://localhost:3000/api/dst?country=US
 
 # Deploy to Vercel
 vercel --prod
@@ -30,33 +28,40 @@ vercel --prod
 ## Architecture
 
 ```
-Browser → Express Server → GOV.UK (https://www.gov.uk/when-do-the-clocks-change)
-           ↓
-         Parses HTML, extracts DST dates, calculates countdown
-           ↓
-         Returns JSON with milliseconds remaining, progress %
+Browser → Vercel Serverless Function (api/dst.js)
+                    ↓
+          Luxon calculates DST transitions
+          by detecting timezone offset changes
+                    ↓
+          Returns JSON with milliseconds remaining, progress %
 ```
 
 **Key files:**
-- `api/dst.js` - Vercel serverless function (main API logic for production)
-- `server.js` - Express server for local development
-- `script.js` - Frontend countdown using requestAnimationFrame
+- `api/dst.js` - Vercel serverless function with Luxon-based DST calculation
+- `script.js` - Frontend countdown (~30fps via setInterval)
 - `index.html`, `style.css` - Swiss-style minimal frontend
+- `data/countries.json` - Supported countries and their timezones
+- `locales/*.json` - Translations for 15 locales
 
 **Data flow:**
-1. Server fetches GOV.UK page and caches HTML for 1 hour
-2. Regex parses March/October dates from the page
-3. API returns next DST event timestamp and progress percentage
-4. Frontend calculates countdown locally using requestAnimationFrame (~60fps)
+1. API receives request with optional `country` param or uses Vercel geolocation headers
+2. Luxon iterates through days of the year detecting UTC offset changes
+3. API returns next DST event timestamp, progress percentage, and country info
+4. Frontend calculates countdown locally at ~30fps
 
 ## Key Patterns
 
-- **HTML Caching**: GOV.UK response cached server-side for 1 hour to minimize external requests
-- **Fallback Calculation**: If no dates found in HTML, calculates next DST using UK rules (last Sunday of March/October)
-- **requestAnimationFrame**: Used instead of setInterval for efficient ~60fps updates
-- **Dual deployment**: Same codebase works as Express server locally and Vercel serverless function in production
+- **Algorithmic DST Detection**: Uses Luxon to find DST transitions by comparing timezone offsets day-by-day
+- **Geolocation**: Vercel headers (`x-vercel-ip-country`, `x-vercel-ip-timezone`) for auto-detection
+- **Client-side Caching**: localStorage caches API response for 1 hour per country
+- **Locale Support**: Country-specific translations and date formatting
+- **Dual deployment**: Same codebase works locally (Express) and on Vercel (serverless)
 
-## UK DST Rules
+## Supported Countries
 
-- **Spring (forward)**: Last Sunday of March at 01:00 UTC → BST begins
-- **Autumn (backward)**: Last Sunday of October at 02:00 UTC → GMT begins
+Europe: GB, SE, NO, FI, DE, NL, PL, FR, IE, DK
+North America: US, CA
+Oceania: AU, NZ
+South America: CL
+
+Countries without DST (JP, CN, IN, etc.) show UK countdown as fallback.

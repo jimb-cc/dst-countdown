@@ -1,6 +1,6 @@
-# UK Daylight Saving Time Countdown
+# International Daylight Saving Time Countdown
 
-A minimalist web application that displays a real-time countdown in milliseconds to the next UK Daylight Saving Time change. Built with Swiss design principles.
+A minimalist web application that displays a real-time countdown to the next Daylight Saving Time change. Supports 15 countries with automatic location detection. Built with Swiss design principles.
 
 ![Swiss Design](https://img.shields.io/badge/design-Swiss_Style-red)
 ![Node.js](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)
@@ -8,15 +8,18 @@ A minimalist web application that displays a real-time countdown in milliseconds
 
 ## Features
 
-- **Real-time countdown** in milliseconds to the next DST event
-- **Fetches official dates** from GOV.UK on each page load
+- **Real-time countdown** to the next DST event (seconds or full breakdown)
+- **15 supported countries** with auto-detection via geolocation
+- **Localized UI** with translations for each supported region
 - **Swiss-style minimalist design**:
   - Helvetica typography
   - Grid-based layout
   - Black/white/red color palette
   - Generous whitespace
+- **Dark mode** toggle
+- **Mood modes** - plain or emotional copy
 - **Responsive design** for all screen sizes
-- **Simple local server** - no cloud deployment needed
+- **Deployed on Vercel** with serverless functions
 
 ## Quick Start
 
@@ -31,66 +34,67 @@ A minimalist web application that displays a real-time countdown in milliseconds
 # Install dependencies
 npm install
 
-# Start the server
-npm start
+# Start the dev server
+npm run dev
 ```
 
-That's it! Open your browser to:
+Open your browser to:
 ```
 http://localhost:3000
 ```
 
 ## How It Works
 
-1. User opens `http://localhost:3000` in their browser
+1. User opens the app in their browser
 2. Frontend JavaScript calls `/api/dst` endpoint
-3. Express server fetches https://www.gov.uk/when-do-the-clocks-change
-4. Server parses the HTML to extract official DST dates
-5. Server calculates which DST event is next and returns the data
-6. Frontend displays countdown that updates every millisecond
+3. Server uses Luxon to calculate DST transitions by detecting timezone offset changes
+4. Server returns the next DST event timestamp and progress data
+5. Frontend displays countdown that updates at ~30fps
 
 ## Architecture
 
 ```
 ┌─────────────────┐
 │   Browser       │
-│  (localhost)    │
 └────────┬────────┘
          │
-         │ HTTP GET /
-         │ HTTP GET /api/dst
+         │ HTTP GET /api/dst?country=XX
          │
 ┌────────▼────────┐
-│  Express.js     │
-│   Server        │
-│  (port 3000)    │
+│  Vercel         │
+│  Serverless     │
+│  Function       │
 └────────┬────────┘
          │
-         │ HTTPS GET
+         │ Luxon timezone
+         │ calculations
          │
 ┌────────▼────────┐
-│   GOV.UK        │
-│ /when-do-the-   │
-│ clocks-change   │
+│  IANA Timezone  │
+│  Database       │
+│  (via Luxon)    │
 └─────────────────┘
 ```
 
 **Tech Stack:**
-- **Backend**: Node.js + Express
+- **Backend**: Node.js + Vercel Serverless Functions
 - **Frontend**: Vanilla HTML/CSS/JavaScript
-- **Data Source**: GOV.UK official website
+- **DST Calculation**: Luxon library (algorithmic, no external API)
 
 ## Project Structure
 
 ```
 .
-├── server.js              # Express server + DST parsing logic
-├── package.json           # Node.js dependencies
-├── frontend/              # Static frontend files
-│   ├── index.html        # Main HTML page
-│   ├── style.css         # Swiss design styling
-│   └── script.js         # Countdown timer logic
-└── README.md             # This file
+├── api/
+│   └── dst.js            # Vercel serverless function (DST calculation)
+├── data/
+│   └── countries.json    # Supported countries and timezones
+├── locales/              # Translations (en-GB, de, fr, sv, etc.)
+├── index.html            # Main HTML page
+├── style.css             # Swiss design styling
+├── script.js             # Frontend countdown logic
+├── vercel.json           # Vercel deployment config
+└── package.json          # Node.js dependencies
 ```
 
 ## Swiss Design Principles
@@ -154,29 +158,54 @@ The server logs to console. Check terminal output for:
 Test the API directly:
 
 ```bash
+# Default (UK or auto-detected country)
 curl http://localhost:3000/api/dst
+
+# Specific country
+curl http://localhost:3000/api/dst?country=US
+curl http://localhost:3000/api/dst?country=SE
 ```
 
 Expected response:
 ```json
 {
   "type": "forward",
-  "description": "Until clocks go forward (BST begins)",
   "targetDate": "2026-03-29T01:00:00.000Z",
   "timestamp": 1774962000000,
   "millisecondsRemaining": 42750123456,
-  "currentTime": 1732212876544
+  "currentTime": 1732212876544,
+  "progressPercent": 45.2,
+  "country": {
+    "code": "GB",
+    "name": "United Kingdom",
+    "flag": "🇬🇧",
+    "hasDST": true
+  },
+  "timezone": "Europe/London"
 }
 ```
 
-## Data Source
+## Supported Countries
 
-Official UK Daylight Saving Time dates from:
-- https://www.gov.uk/when-do-the-clocks-change
+| Region | Countries |
+|--------|-----------|
+| Europe | UK, Sweden, Norway, Finland, Germany, Netherlands, Poland, France, Ireland, Denmark |
+| North America | USA, Canada |
+| Oceania | Australia, New Zealand |
+| South America | Chile |
 
-**UK DST Rules:**
-- **Spring**: Clocks go forward 1 hour at 1:00 AM on the last Sunday in March
-- **Autumn**: Clocks go back 1 hour at 2:00 AM on the last Sunday in October
+Countries without DST (Japan, China, India, etc.) display the UK countdown as a fallback.
+
+## How DST is Calculated
+
+The app uses the **Luxon** library to calculate DST transitions algorithmically:
+
+1. Iterates through each day of the current and next year
+2. Compares timezone offsets day-by-day
+3. When an offset change is detected, that's a DST transition
+4. Returns the next future transition as the target event
+
+This approach is more reliable than scraping external websites and works offline.
 
 ## Browser Compatibility
 
@@ -223,13 +252,14 @@ curl http://localhost:3000/api/dst
 ## Future Enhancements
 
 Possible additions:
-- [ ] Dark mode toggle
-- [ ] Display days/hours/minutes alongside milliseconds
+- [x] Dark mode toggle
+- [x] Display days/hours/minutes alongside milliseconds
+- [x] Multiple country support
+- [x] Localized translations
 - [ ] Historical DST change log
 - [ ] Export countdown to calendar (ICS file)
 - [ ] Docker containerization
-- [ ] Unit tests for date parsing
-- [ ] Fallback calculation if GOV.UK is unreachable
+- [ ] Unit tests for DST calculations
 
 ## License
 
