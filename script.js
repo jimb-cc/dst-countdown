@@ -545,8 +545,8 @@ function initSettings() {
             }
 
             try {
-                await updateLocale(); // Load locale for new country FIRST
-                await fetchDSTData(true); // Then fetch DST data (formats date with correct locale)
+                await fetchDSTData(true); // Fetch DST data FIRST to get correct eventData
+                await updateLocale(); // Then load locale and apply mood with correct data
                 startCountdown();
             } catch (error) {
                 console.error('Failed to fetch DST data for new country:', error);
@@ -711,16 +711,22 @@ function updateSolsticeMarker() {
     }
 
     const isWinter = eventData.type === 'forward';
+    const isSouthernHemisphere = eventData.country?.southernHemisphere || false;
+    const prevDate = new Date(previousTimestamp);
     let solsticeTimestamp;
 
-    if (isWinter) {
-        // Winter period (Oct → March): show winter solstice (Dec 21)
-        const prevDate = new Date(previousTimestamp);
+    // December solstice: winter in north, summer in south
+    // June solstice: summer in north, winter in south
+    // For southern hemisphere, invert which solstice to show
+    const useDecemberSolstice = isSouthernHemisphere ? !isWinter : isWinter;
+
+    if (useDecemberSolstice) {
+        // Show December solstice (Dec 21)
+        // Use the year from previousTimestamp since Dec falls in the period
         const solstice = getWinterSolstice(prevDate.getFullYear());
         solsticeTimestamp = solstice.getTime();
     } else {
-        // Summer period (March → Oct): show summer solstice (June 21)
-        const prevDate = new Date(previousTimestamp);
+        // Show June solstice (June 21)
         const solstice = getSummerSolstice(prevDate.getFullYear());
         solsticeTimestamp = solstice.getTime();
     }
