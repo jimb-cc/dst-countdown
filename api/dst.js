@@ -128,7 +128,7 @@ function calculateDSTForTimezone(timezone) {
     // Find DST transitions by checking offset changes throughout the year
     const transitions = [];
 
-    for (let year = currentYear; year <= currentYear + 1; year++) {
+    for (let year = currentYear - 1; year <= currentYear + 1; year++) {
         const yearTransitions = findDSTTransitions(timezone, year);
         transitions.push(...yearTransitions);
     }
